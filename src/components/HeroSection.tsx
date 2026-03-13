@@ -22,7 +22,7 @@ const HeroSection = () => (
             View Work
           </a>
           <a
-            href=https://calendar.app.google/tiWXwJM7D6tmoAtx7
+            href="https://calendar.app.google/tiWXwJM7D6tmoAtx7"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center justify-center rounded-lg border border-border px-6 py-3 text-sm font-semibold text-foreground hover:bg-secondary transition-colors"

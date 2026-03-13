@@ -15,8 +15,10 @@ const ContactSection = () => (
         Ready to streamline your systems? Let's talk about what precision automation can do for your business.
       </p>
       <a
-        href="mailto:cary@example.com"
-        className="inline-flex items-center justify-center rounded-lg bg-gradient-primary px-8 py-3 text-sm font-semibold text-primary-foreground hover:opacity-90 transition-opacity"
+        href="https://calendar.app.google/tiWXwJM7D6tmoAtx7"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="inline-flex items-center justify-center rounded-lg bg-primary px-8 py-4 text-lg font-semibold text-primary-foreground hover:opacity-90 transition-opacity"
       >
         Book a Call
       </a>

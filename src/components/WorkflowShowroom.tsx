@@ -1,14 +1,43 @@
 import { motion } from "framer-motion";
-import followup from "@/assets/followup-nudge.png";
-import nurture from "@/assets/nurture-sequence.png";
-import pipeline from "@/assets/pipeline-automation.png";
-import routing from "@/assets/pipeline-routing.png";
+import { Check } from "lucide-react"; // Make sure to install lucide-react or use a simple SVG
 
-const cards = [
-  { img: followup, title: "Multi-Channel Follow-up Nudge", desc: "A precision-timed sequence to ensure consistent lead engagement without manual effort." },
-  { img: nurture, title: "Structured Nurture Sequence", desc: "A methodical workflow designed to build trust and maintain long-term lead contact." },
-  { img: pipeline, title: "Real Estate Pipeline Management", desc: "Systems built from firsthand acquisitions experience to keep leads organized and data-driven." },
-  { img: routing, title: "Efficient Pipeline Routing", desc: "Advanced logic to ensure every lead is directed to the right stage or team member instantly." },
+const ghlCapabilities = [
+  {
+    category: "Core Infrastructure & Setup",
+    items: [
+      "Full Sub-Account Onboarding & Domain Integration",
+      "Custom Snapshot Creation & Deployment",
+      "SaaS Mode Configuration & Stripe Integration",
+      "White-Label Branding & Custom CSS Styling"
+    ]
+  },
+  {
+    category: "Advanced Automation & CRM",
+    items: [
+      "Complex Workflow Logic with If/Else Branching",
+      "Database Reactivation (DBR) Sequences",
+      "Unified Multi-Channel Inbox Management",
+      "Smart List Segmentation & Lead Management"
+    ]
+  },
+  {
+    category: "Funnels & Conversions",
+    items: [
+      "High-Converting Multi-Step Sales Funnels",
+      "Mobile-Responsive Landing Page Design",
+      "A/B Split Testing & Conversion Analytics",
+      "Advanced Forms & Surveys with Conditional Logic"
+    ]
+  },
+  {
+    category: "Operations & Retention",
+    items: [
+      "Round-Robin Calendar & Appointment Systems",
+      "Reputation Management & Automated Review Requests",
+      "Gated Membership Areas & Course Portals",
+      "API, Webhook, and Zapier Integrations"
+    ]
+  }
 ];
 
 const WorkflowShowroom = () => (
@@ -20,32 +49,33 @@ const WorkflowShowroom = () => (
         viewport={{ once: true }}
         className="text-3xl md:text-4xl font-bold text-gradient mb-4"
       >
-        The Workflow Showroom
+        GoHighLevel Capability Showroom
       </motion.h2>
       <p className="text-muted-foreground mb-12 max-w-xl">
-        Precision-engineered GoHighLevel automations built for real estate teams.
+        Precision-engineered automations and high-level architectural solutions for scalable businesses.
       </p>
-      <div className="grid md:grid-cols-2 gap-6">
-        {cards.map((card, i) => (
+
+      <div className="grid md:grid-cols-2 gap-8">
+        {ghlCapabilities.map((group, i) => (
           <motion.div
-            key={card.title}
+            key={group.category}
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: i * 0.1 }}
-            className="group rounded-xl border border-border bg-card overflow-hidden hover:glow-card transition-shadow"
+            className="p-6 rounded-xl border border-border bg-card/50 hover:border-primary/50 transition-colors"
           >
-            <div className="overflow-hidden">
-              <img
-                src={card.img}
-                alt={card.title}
-                className="w-full h-52 object-cover object-top group-hover:scale-105 transition-transform duration-500"
-              />
-            </div>
-            <div className="p-6">
-              <h3 className="text-lg font-semibold text-foreground mb-2">{card.title}</h3>
-              <p className="text-sm text-muted-foreground leading-relaxed">{card.desc}</p>
-            </div>
+            <h3 className="text-xl font-semibold text-foreground mb-4 border-b border-border pb-2">
+              {group.category}
+            </h3>
+            <ul className="space-y-3">
+              {group.items.map((item, index) => (
+                <li key={index} className="flex items-start gap-3 text-sm text-muted-foreground">
+                  <Check className="w-4 h-4 mt-0.5 text-primary shrink-0" />
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
           </motion.div>
         ))}
       </div>

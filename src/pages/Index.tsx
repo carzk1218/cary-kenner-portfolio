@@ -1,6 +1,7 @@
 import Header from "@/components/Header";
 import HeroSection from "@/components/HeroSection";
 import WorkflowCapability from "@/components/WorkflowCapability";
+import WorkflowShowroom from "@/components/WorkflowShowroom";
 import WebDesignProject from "@/components/WebDesignProject";
 import TestimonialSection from "@/components/TestimonialSection";
 import AboutSection from "@/components/AboutSection";
@@ -11,6 +12,7 @@ const Index = () => (
     <Header />
     <HeroSection />
     <WorkflowCapability />
+    <WorkflowShowroom />
     <WebDesignProject />
     <TestimonialSection />
     <AboutSection />

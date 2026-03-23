@@ -5,18 +5,18 @@ import { ExternalLink } from "lucide-react";
 
 const projects = [
   {
-    image: geekseek,
-    alt: "GeekSeek Capstone Project",
-    title: "GeekSeek: Custom Capstone Project",
-    description: "A custom-coded project demonstrating my technical BSIT roots and frontend UI/UX proficiency.",
-    link: "https://carzk1218.gitlab.io/capstone-1/#",
-  },
-  {
     image: daybreakland,
     alt: "Daybreak Land Website",
     title: "Daybreak Land: Live Business Solution",
     description: "Designed and optimized a professional web presence for a real estate investment firm, focusing on clarity, lead capture, and brand trust.",
     link: "https://daybreakland.com/",
+  },
+  {
+    image: geekseek,
+    alt: "GeekSeek Capstone Project",
+    title: "GeekSeek: Custom Capstone Project",
+    description: "A custom-coded project demonstrating my technical BSIT roots and frontend UI/UX proficiency.",
+    link: "https://carzk1218.gitlab.io/capstone-1/#",
   },
 ];
 

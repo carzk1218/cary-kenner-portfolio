@@ -1,6 +1,6 @@
 import Header from "@/components/Header";
 import HeroSection from "@/components/HeroSection";
-import WorkflowShowroom from "@/components/WorkflowShowroom";
+import WorkflowCapability from "@/components/WorkflowCapability";
 import WebDesignProject from "@/components/WebDesignProject";
 import TestimonialSection from "@/components/TestimonialSection";
 import AboutSection from "@/components/AboutSection";

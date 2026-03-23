@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Check } from "lucide-react"; // Make sure to install lucide-react or use a simple SVG
+import { Check } from "lucide-react"; 
 
 const ghlCapabilities = [
   {
@@ -40,7 +40,7 @@ const ghlCapabilities = [
   }
 ];
 
-const WorkflowShowroom = () => (
+const WorkflowCapability = () => (
   <section id="work" className="py-24">
     <div className="container">
       <motion.h2
@@ -49,7 +49,7 @@ const WorkflowShowroom = () => (
         viewport={{ once: true }}
         className="text-3xl md:text-4xl font-bold text-gradient mb-4"
       >
-        GoHighLevel Capability Showroom
+        GoHighLevel Capability
       </motion.h2>
       <p className="text-muted-foreground mb-12 max-w-xl">
         Precision-engineered automations and high-level architectural solutions for scalable businesses.
@@ -83,4 +83,4 @@ const WorkflowShowroom = () => (
   </section>
 );
 
-export default WorkflowShowroom;
+export default WorkflowCapability;

@@ -10,7 +10,7 @@ const Index = () => (
   <div className="min-h-screen bg-background">
     <Header />
     <HeroSection />
-    <WorkflowShowroom />
+    <WorkflowCapability />
     <WebDesignProject />
     <TestimonialSection />
     <AboutSection />

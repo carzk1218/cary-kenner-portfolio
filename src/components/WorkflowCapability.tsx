@@ -35,7 +35,7 @@ const ghlCapabilities = [
       "Round-Robin Calendar & Appointment Systems",
       "Reputation Management & Automated Review Requests",
       "Gated Membership Areas & Course Portals",
-      "API, Webhook, and Zapier Integrations"
+      "API, Webhook, Zapier and Make Integrations"
     ]
   }
 ];

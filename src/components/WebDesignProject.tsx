@@ -14,20 +14,20 @@ const projects = [
     link: "https://jollyland-site.vercel.app/",
   },
   {
-    image: geekseek,
-    alt: "GeekSeek Capstone Project",
-    title: "GeekSeek: Custom Capstone",
-    stack: "HTML5 • CSS3 • JavaScript",
-    description: "My technical BSIT roots. A custom-coded project focused on frontend UI/UX proficiency and clean core programming structures.",
-    link: "https://carzk1218.gitlab.io/capstone-1/#",
-  },
-  {
     image: daybreakland,
     alt: "Daybreak Land Website",
     title: "Daybreak Land: Live Business",
     stack: "GoDaddy Builder • Lead Capture",
     description: "A professional web presence for a real estate investment firm, built on GoDaddy's proprietary platform for rapid deployment and reliability.",
     link: "https://daybreakland.com/",
+  },
+  {
+    image: geekseek,
+    alt: "GeekSeek Capstone Project",
+    title: "GeekSeek: Custom Capstone",
+    stack: "HTML5 • CSS3 • JavaScript",
+    description: "My technical BSIT roots. A custom-coded project focused on frontend UI/UX proficiency and clean core programming structures.",
+    link: "https://carzk1218.gitlab.io/capstone-1/#",
   },
 ];
 
@@ -46,7 +46,7 @@ const WebDesignProject = () => (
         A collection of professional deployments and technical projects showcasing design sensibility and modern development stacks.
       </p>
 
-      {/* 3-Column Grid for the projects */}
+      {/* 3-Column Grid */}
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
         {projects.map((project, i) => (
           <motion.div
@@ -57,7 +57,7 @@ const WebDesignProject = () => (
             transition={{ delay: i * 0.15 }}
             className="group relative flex flex-col rounded-2xl border border-border bg-card overflow-hidden hover:border-primary/50 transition-all duration-500 shadow-xl"
           >
-            {/* Image Container */}
+            {/* Image & Hover Overlay */}
             <div className="h-64 relative overflow-hidden">
               <img
                 src={project.image}
@@ -65,8 +65,8 @@ const WebDesignProject = () => (
                 className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-110"
               />
               
-              {/* Overlay: Shows on Hover */}
-              <div className="absolute inset-0 bg-black/80 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-center p-8">
+              {/* Overlay with Description */}
+              <div className="absolute inset-0 bg-black/85 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-center p-8">
                 <p className="text-white text-sm leading-relaxed mb-4 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
                   {project.description}
                 </p>
@@ -74,7 +74,7 @@ const WebDesignProject = () => (
               </div>
             </div>
 
-            {/* Static Content (Always Visible) */}
+            {/* Always Visible Content */}
             <div className="p-6">
               <div className="mb-2">
                 <span className="text-[10px] uppercase tracking-widest text-primary font-bold">

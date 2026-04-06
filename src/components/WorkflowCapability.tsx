@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Check } from "lucide-react"; 
+import { Check, Cpu } from "lucide-react"; 
 
 const ghlCapabilities = [
   {
@@ -35,14 +35,33 @@ const ghlCapabilities = [
       "Round-Robin Calendar & Appointment Systems",
       "Reputation Management & Automated Review Requests",
       "Gated Membership Areas & Course Portals",
-      "API, Webhook, Zapier and Make Integrations"
+      "Custom API & Webhook Connectivity"
     ]
+  }
+];
+
+const automationStack = [
+  {
+    name: "Zapier",
+    desc: "Rapid deployment for connecting 5,000+ apps with enterprise-grade stability.",
+    tag: "Connectivity"
+  },
+  {
+    name: "Make.com",
+    desc: "Advanced visual automation for complex data mapping and multi-step logic.",
+    tag: "Logic Architect"
+  },
+  {
+    name: "n8n.io",
+    desc: "Technical-first, cost-efficient automation for high-volume data processing.",
+    tag: "Efficiency"
   }
 ];
 
 const WorkflowCapability = () => (
   <section id="work" className="py-24">
     <div className="container">
+      {/* GHL Section */}
       <motion.h2
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -55,7 +74,7 @@ const WorkflowCapability = () => (
         Precision-engineered automations and high-level architectural solutions for scalable businesses.
       </p>
 
-      <div className="grid md:grid-cols-2 gap-8">
+      <div className="grid md:grid-cols-2 gap-8 mb-20">
         {ghlCapabilities.map((group, i) => (
           <motion.div
             key={group.category}
@@ -79,6 +98,43 @@ const WorkflowCapability = () => (
           </motion.div>
         ))}
       </div>
+
+      {/* NEW: Automation Ecosystem Section */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true }}
+        className="pt-12 border-t border-border"
+      >
+        <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-4 flex items-center gap-3">
+          <Cpu className="text-primary w-8 h-8" />
+          Technical Automation Ecosystem
+        </h2>
+        <p className="text-muted-foreground mb-10 max-w-2xl">
+          Bridging the gap between your CRM and the world. I specialize in building "no-limit" systems using industry-leading integration engines.
+        </p>
+
+        <div className="grid md:grid-cols-3 gap-6">
+          {automationStack.map((tool, i) => (
+            <motion.div
+              key={tool.name}
+              initial={{ opacity: 0, scale: 0.95 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.1 }}
+              className="p-6 rounded-xl border border-primary/20 bg-primary/5 hover:bg-primary/10 transition-all group"
+            >
+              <div className="text-xs font-bold uppercase tracking-widest text-primary mb-2">{tool.tag}</div>
+              <h4 className="text-xl font-bold text-foreground mb-2 group-hover:text-primary transition-colors">
+                {tool.name}
+              </h4>
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                {tool.desc}
+              </p>
+            </motion.div>
+          ))}
+        </div>
+      </motion.div>
     </div>
   </section>
 );

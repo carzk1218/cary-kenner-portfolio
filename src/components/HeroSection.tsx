@@ -11,11 +11,11 @@ const HeroSection = () => (
         transition={{ duration: 0.7 }}
       >
         <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-6">
-          <span className="text-gradient">GoHighLevel Architect:</span>{" "}
+          <span className="text-gradient">Full-Stack Automation Architect & CRM Specialist</span>{" "}
           <span className="text-foreground">Precise Systems, Efficient Workflows.</span>
         </h1>
         <p className="text-lg text-muted-foreground leading-relaxed mb-8 max-w-lg">
-          Building organized, reliable automation from the ground up. Combining firsthand experience in Real Estate Acquisitions with technical BSIT roots to create workflows that work.
+          Helping businesses scale by building high-converting GoHighLevel ecosystems and seamless cross-platform automations. Expert in bridging the gap between your CRM and the tools you love using Zapier, Make.com, and n8n.
         </p>
         <div className="flex gap-4">
           <a href="#work" className="inline-flex items-center justify-center rounded-lg bg-gradient-primary px-6 py-3 text-sm font-semibold text-primary-foreground hover:opacity-90 transition-opacity">

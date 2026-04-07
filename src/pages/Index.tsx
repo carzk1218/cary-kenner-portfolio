@@ -19,7 +19,7 @@ const Index = () => (
     <ContactSection />
     <footer className="border-t border-border py-8">
       <div className="container text-center text-sm text-muted-foreground">
-        © 2024 Cary Kenner. Built with precision.
+        © 2023 Cary Kenner. Built with precision.
       </div>
     </footer>
   </div>

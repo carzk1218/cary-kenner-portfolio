@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { FiChevronDown } from "react-icons/fi";
 
 const WorkflowShowroom = () => {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
@@ -8,7 +7,7 @@ const WorkflowShowroom = () => {
   const workflows = [
     {
       title: "GHL Real Estate Workflow",
-      videoId: "YOUR_GHL_VIDEO_ID", // Replace this with your actual ID
+      videoId: "pgAn3cSni9U",
       description: [
         "Implemented a scalable 0–6 folder architecture for clean system organization.",
         "Automated the intake process using centralized webhooks and external integrations.",
@@ -71,11 +70,23 @@ const WorkflowShowroom = () => {
                   <h3 className="text-xl font-semibold text-white group-hover:text-purple-400 transition-colors">
                     {item.title}
                   </h3>
+                  {/* Custom SVG Arrow instead of react-icons */}
                   <motion.div
                     animate={{ rotate: openIndex === index ? 180 : 0 }}
-                    className="text-purple-500 text-2xl"
+                    className="text-purple-500"
                   >
-                    <FiChevronDown />
+                    <svg 
+                      width="24" 
+                      height="24" 
+                      viewBox="0 0 24 24" 
+                      fill="none" 
+                      stroke="currentColor" 
+                      strokeWidth="2" 
+                      strokeLinecap="round" 
+                      strokeLinejoin="round"
+                    >
+                      <polyline points="6 9 12 15 18 9"></polyline>
+                    </svg>
                   </motion.div>
                 </button>
 

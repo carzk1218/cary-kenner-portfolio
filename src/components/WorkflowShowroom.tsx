@@ -1,3 +1,7 @@
+import React, { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+
+// Highly visible gallery modal for deep-dives
 const MediaModal = ({ media, title, onClose }: { media: string[]; title: string; onClose: () => void }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const nextMedia = () => setCurrentIndex((prev) => (prev + 1) % media.length);
@@ -14,65 +18,157 @@ const MediaModal = ({ media, title, onClose }: { media: string[]; title: string;
         onClick={onClose}
       >
         <div className="relative w-full max-w-7xl h-[85vh] flex items-center justify-center" onClick={(e) => e.stopPropagation()}>
+          <button onClick={onClose} className="absolute -top-12 right-0 text-white/70 hover:text-purple-400 text-4xl transition-colors z-[1002]">×</button>
           
-          {/* Close Button - More Visible */}
-          <button 
-            onClick={onClose} 
-            className="absolute -top-12 right-0 text-white/70 hover:text-purple-400 text-4xl transition-colors z-[1002]"
-          >
-            ×
-          </button>
-          
-          {/* Header Info */}
           <div className="absolute top-0 left-0 w-full text-center z-[1000] p-4">
             <h3 className="text-xl font-bold text-purple-500 tracking-widest uppercase">{title}</h3>
             <p className="text-sm text-gray-500 mt-1 font-mono">{currentIndex + 1} / {media.length}</p>
           </div>
 
-          {/* Navigation Arrows with Solid Backgrounds for High Visibility */}
+          {/* Navigation Arrows with Solid Dark Backgrounds for Visibility */}
           <button 
             onClick={prevMedia} 
-            className="absolute left-2 md:left-4 z-[1001] w-14 h-14 flex items-center justify-center rounded-full bg-black/60 border border-white/10 text-white hover:bg-purple-600 hover:scale-110 transition-all group"
+            className="absolute left-2 md:left-4 z-[1001] w-14 h-14 flex items-center justify-center rounded-full bg-black/80 border border-white/10 text-white hover:bg-purple-600 transition-all"
           >
-            <svg className="w-8 h-8 group-active:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="3">
-              <path d="M15 19l-7-7 7-7" />
-            </svg>
+            <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="3"><path d="M15 19l-7-7 7-7" /></svg>
           </button>
 
           <button 
             onClick={nextMedia} 
-            className="absolute right-2 md:right-4 z-[1001] w-14 h-14 flex items-center justify-center rounded-full bg-black/60 border border-white/10 text-white hover:bg-purple-600 hover:scale-110 transition-all group"
+            className="absolute right-2 md:right-4 z-[1001] w-14 h-14 flex items-center justify-center rounded-full bg-black/80 border border-white/10 text-white hover:bg-purple-600 transition-all"
           >
-            <svg className="w-8 h-8 group-active:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="3">
-              <path d="M9 5l7 7-7 7" />
-            </svg>
+            <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="3"><path d="M9 5l7 7-7 7" /></svg>
           </button>
           
-          {/* Main Content Area */}
-          <motion.div 
-            key={currentIndex} 
-            initial={{ opacity: 0, x: 20 }} 
-            animate={{ opacity: 1, x: 0 }} 
-            exit={{ opacity: 0, x: -20 }}
-            className="w-full h-full flex items-center justify-center"
-          >
+          <motion.div key={currentIndex} initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="w-full h-full flex items-center justify-center">
             {isVideo(media[currentIndex]) ? (
-              <iframe 
-                src={`https://www.youtube.com/embed/${media[currentIndex]}?autoplay=1`} 
-                className="w-full max-w-5xl aspect-video rounded-2xl shadow-[0_0_50px_rgba(168,85,247,0.2)] border border-white/5" 
-                allowFullScreen 
-              />
+              <iframe src={`https://www.youtube.com/embed/${media[currentIndex]}?autoplay=1`} className="w-full max-w-5xl aspect-video rounded-2xl shadow-2xl border border-white/5" allowFullScreen />
             ) : (
-              <img 
-                src={media[currentIndex]} 
-                className="max-w-full max-h-full object-contain rounded-xl shadow-2xl border border-white/10" 
-                alt="Workflow detail" 
-              />
+              <img src={media[currentIndex]} className="max-w-full max-h-full object-contain rounded-xl shadow-2xl" alt="Workflow" />
             )}
           </motion.div>
         </div>
       </motion.div>
     </AnimatePresence>
+  );
+};
+
+const WorkflowShowroom = () => {
+  const [activeId, setActiveId] = useState<string | null>(null);
+  const [modalData, setModalData] = useState<{ media: string[]; title: string } | null>(null);
+
+  const workflows = [
+    {
+      id: "clinic-automation",
+      title: "Clinic AI Patient Journey",
+      media: [
+        "/projects/zap-patientjourneypipeline.jpg", "/projects/clinic-form.jpg", "/projects/clinic-notion.jpg", 
+        "/projects/clinic-1a.jpg", "/projects/clinic-1b.jpg", "/projects/clinic-2a.jpg", "/projects/clinic-2b.jpg", 
+        "/projects/clinic-2c.jpg", "/projects/clinic-3a.jpg", "/projects/clinic-notion2.jpg", "/projects/clinic-notion3.jpg",
+        "/projects/clinic-notion4.jpg", "/projects/clinic-notion5.jpg"
+      ],
+      description: [
+        "Notion, Calendly, and Gmail integration via 8-Zap automation.",
+        "Automated patient routing using an AI intake classifier.",
+        "Direct appointment confirmations and drip email reminders.",
+        "Two-way email synchronization within Notion databases.",
+        "Post-visit feedback collection and sentiment analysis."
+      ]
+    },
+    {
+      id: "make-budget-ai",
+      title: "Make.com AI Budget Automation",
+      media: ["/projects/make-ai-budget.jpg", "0AK3bq1dLzA"],
+      description: [
+        "Real-time expense tracking via Telegram and Google Sheets.",
+        "Automated text and photo entry processing.",
+        "AI OCR data extraction from uploaded receipt images.",
+        "Auto-populating trackers for budgets and credit cards.",
+        "Instant monthly spending reports and calculations."
+      ]
+    },
+    {
+      id: "ghl-real-estate",
+      title: "GHL Real Estate Workflow",
+      media: ["pgAn3cSni9U"],
+      description: [
+        "Scalable lead management using a 0–6 folder structure.",
+        "Automated intake via centralized webhooks.",
+        "Property analysis and deal math using custom calculators.",
+        "Contract generation automated within the GHL platform.",
+        "Pipeline-based lead progression tracking."
+      ]
+    },
+    {
+      id: "conversation-ai",
+      title: "Conversation AI Integration",
+      media: ["zLhmT3m_yQ8"],
+      description: [
+        "AI property intake agent with custom knowledge base training.",
+        "Natural conversational pacing for customer engagement.",
+        "Intent routing to identify and capture missing data.",
+        "Automated circle-back logic for incomplete lead details."
+      ]
+    }
+  ];
+
+  return (
+    <section id="showroom" className="py-24 bg-[#0a0a0a]">
+      <div className="max-w-[1500px] mx-auto px-6">
+        <h2 className="text-center text-5xl font-bold text-white mb-20">
+          Workflow <span className="text-purple-500 italic">Showroom</span>
+        </h2>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-8">
+          {workflows.map((item) => (
+            <div key={item.id} className="bg-[#121212] rounded-3xl border border-white/5 shadow-2xl overflow-hidden flex flex-col h-fit">
+              <div 
+                className="aspect-video w-full bg-black relative group cursor-pointer overflow-hidden"
+                onClick={() => setModalData({ media: item.media, title: item.title })}
+              >
+                <img 
+                  src={item.media[0].startsWith("/") ? item.media[0] : `https://img.youtube.com/vi/${item.media[0]}/maxresdefault.jpg`} 
+                  className="w-full h-full object-cover opacity-60 group-hover:opacity-100 transition-opacity" 
+                  alt={item.title}
+                />
+                <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-purple-600/10">
+                   <span className="bg-white/10 backdrop-blur-md border border-white/20 px-6 py-2 rounded-full text-xs font-bold uppercase tracking-widest text-white">Open Gallery</span>
+                </div>
+              </div>
+
+              <div className="p-6">
+                <button 
+                  onClick={() => setActiveId(activeId === item.id ? null : item.id)}
+                  className="flex items-center justify-between w-full group text-left"
+                >
+                  <span className="text-lg font-bold text-white group-hover:text-purple-400 transition-colors pr-2">{item.title}</span>
+                  <div className={`p-2 rounded-xl transition-all ${activeId === item.id ? 'bg-purple-500 text-white' : 'bg-white/5 text-purple-400'}`}>
+                    <svg className={`w-4 h-4 transform transition-transform ${activeId === item.id ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="3"><path d="M19 9l-7 7-7-7"/></svg>
+                  </div>
+                </button>
+
+                <AnimatePresence>
+                  {activeId === item.id && (
+                    <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} className="overflow-hidden">
+                      <ul className="mt-6 space-y-4 border-t border-white/5 pt-6">
+                        {item.description.map((bullet, i) => (
+                          <li key={i} className="text-gray-400 text-sm flex items-start leading-relaxed">
+                            <span className="text-purple-500 mr-3 mt-1.5 text-[8px]">●</span>
+                            {bullet}
+                          </li>
+                        ))}
+                      </ul>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {modalData && <MediaModal media={modalData.media} title={modalData.title} onClose={() => setModalData(null)} />}
+    </section>
   );
 };
 

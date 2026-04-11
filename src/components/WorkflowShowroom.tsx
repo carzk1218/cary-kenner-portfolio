@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 const WorkflowShowroom = () => {
+  // Initialize as null so nothing is open by default
   const [openIndex, setOpenIndex] = useState<number | null>(null);
 
   const workflows = [
@@ -31,6 +32,11 @@ const WorkflowShowroom = () => {
     },
   ];
 
+  const toggleAccordion = (index: number) => {
+    // If the clicked one is already open, close it. Otherwise, open the new one.
+    setOpenIndex(openIndex === index ? null : index);
+  };
+
   return (
     <section id="showroom" className="py-20 bg-[#0a0a0a]">
       <div className="max-w-6xl mx-auto px-4">
@@ -51,8 +57,9 @@ const WorkflowShowroom = () => {
               key={index}
               initial={{ opacity: 0, scale: 0.95 }}
               whileInView={{ opacity: 1, scale: 1 }}
-              className="bg-[#161616] rounded-2xl overflow-hidden border border-white/10 shadow-2xl"
+              className="bg-[#161616] rounded-2xl overflow-hidden border border-white/10 shadow-2xl flex flex-col"
             >
+              {/* Video Player */}
               <div className="aspect-video w-full bg-black">
                 <iframe
                   src={`https://www.youtube.com/embed/${item.videoId}`}
@@ -62,42 +69,33 @@ const WorkflowShowroom = () => {
                 />
               </div>
 
-              <div className="p-6">
+              {/* Accordion Content */}
+              <div className="p-6 flex-grow">
                 <button
-                  onClick={() => setOpenIndex(openIndex === index ? null : index)}
+                  onClick={() => toggleAccordion(index)}
                   className="flex items-center justify-between w-full text-left group focus:outline-none"
                 >
                   <h3 className="text-xl font-semibold text-white group-hover:text-purple-400 transition-colors">
                     {item.title}
                   </h3>
-                  {/* Custom SVG Arrow instead of react-icons */}
                   <motion.div
                     animate={{ rotate: openIndex === index ? 180 : 0 }}
                     className="text-purple-500"
                   >
-                    <svg 
-                      width="24" 
-                      height="24" 
-                      viewBox="0 0 24 24" 
-                      fill="none" 
-                      stroke="currentColor" 
-                      strokeWidth="2" 
-                      strokeLinecap="round" 
-                      strokeLinejoin="round"
-                    >
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                       <polyline points="6 9 12 15 18 9"></polyline>
                     </svg>
                   </motion.div>
                 </button>
 
-                <AnimatePresence>
+                <AnimatePresence initial={false}>
                   {openIndex === index && (
                     <motion.div
+                      key="content"
                       initial={{ height: 0, opacity: 0 }}
                       animate={{ height: "auto", opacity: 1 }}
                       exit={{ height: 0, opacity: 0 }}
                       transition={{ duration: 0.3, ease: "easeInOut" }}
-                      className="overflow-hidden"
                     >
                       <ul className="mt-4 space-y-3 border-t border-white/5 pt-4">
                         {item.description.map((bullet, i) => (

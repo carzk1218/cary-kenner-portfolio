@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { FiChevronDown } from "react-icons/fi"; // Make sure to install react-icons
+import { FiChevronDown } from "react-icons/fi";
 
 const WorkflowShowroom = () => {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
@@ -8,7 +8,7 @@ const WorkflowShowroom = () => {
   const workflows = [
     {
       title: "GHL Real Estate Workflow",
-      videoId: "YOUR_GHL_VIDEO_ID",
+      videoId: "YOUR_GHL_VIDEO_ID", // Replace this with your actual ID
       description: [
         "Implemented a scalable 0–6 folder architecture for clean system organization.",
         "Automated the intake process using centralized webhooks and external integrations.",
@@ -54,21 +54,19 @@ const WorkflowShowroom = () => {
               whileInView={{ opacity: 1, scale: 1 }}
               className="bg-[#161616] rounded-2xl overflow-hidden border border-white/10 shadow-2xl"
             >
-              {/* Video Container */}
               <div className="aspect-video w-full bg-black">
                 <iframe
                   src={`https://www.youtube.com/embed/${item.videoId}`}
-                  className="w-full h-full"
+                  className="w-full h-full border-0"
                   allowFullScreen
                   title={item.title}
                 />
               </div>
 
-              {/* Content Area */}
               <div className="p-6">
                 <button
                   onClick={() => setOpenIndex(openIndex === index ? null : index)}
-                  className="flex items-center justify-between w-full text-left group"
+                  className="flex items-center justify-between w-full text-left group focus:outline-none"
                 >
                   <h3 className="text-xl font-semibold text-white group-hover:text-purple-400 transition-colors">
                     {item.title}
@@ -86,4 +84,28 @@ const WorkflowShowroom = () => {
                     <motion.div
                       initial={{ height: 0, opacity: 0 }}
                       animate={{ height: "auto", opacity: 1 }}
-                      exit={{ height: 0, opacity:
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.3, ease: "easeInOut" }}
+                      className="overflow-hidden"
+                    >
+                      <ul className="mt-4 space-y-3 border-t border-white/5 pt-4">
+                        {item.description.map((bullet, i) => (
+                          <li key={i} className="text-gray-400 text-sm flex items-start">
+                            <span className="text-purple-500 mr-2">•</span>
+                            {bullet}
+                          </li>
+                        ))}
+                      </ul>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+};
+
+export default WorkflowShowroom;

@@ -2,10 +2,21 @@ import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 const WorkflowShowroom = () => {
-  // We track the specific active ID. Only one can be active at a time.
   const [activeId, setActiveId] = useState<string | null>(null);
 
   const workflows = [
+    {
+      id: "make-budget-ai",
+      title: "Make.com AI Budget Automation",
+      videoId: "0AK3bq1dLzA",
+      description: [
+        "Architected a Telegram-to-Google Sheets bridge for real-time expense tracking via Make.com.",
+        "Engineered a dual-router system to distinguish between manual text entries and receipt photo uploads.",
+        "Integrated AI OCR to extract total prices and payment modes from physical receipt images automatically.",
+        "Built auto-populating logic for specialized credit card trackers to predict upcoming statement balances.",
+        "Automated monthly and daily spending calculations within Google Sheets for instant financial oversight.",
+      ],
+    },
     {
       id: "ghl-real-estate",
       title: "GHL Real Estate Workflow",
@@ -45,13 +56,14 @@ const WorkflowShowroom = () => {
           Workflow Showroom
         </motion.h2>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+        {/* Adjusted grid for 3 items: Single column on mobile, 2 columns on tablet, 3 on desktop */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {workflows.map((item) => (
             <div 
               key={item.id}
               className="bg-[#161616] rounded-2xl overflow-hidden border border-white/10 shadow-2xl flex flex-col h-fit"
             >
-              {/* Video Container */}
+              {/* Video Container - Optimized for Shorts/Videos */}
               <div className="aspect-video w-full bg-black">
                 <iframe
                   src={`https://www.youtube.com/embed/${item.videoId}`}
@@ -67,7 +79,7 @@ const WorkflowShowroom = () => {
                   onClick={() => setActiveId(activeId === item.id ? null : item.id)}
                   className="flex items-center justify-between w-full text-left focus:outline-none group"
                 >
-                  <span className="text-xl font-semibold text-white group-hover:text-purple-400 transition-colors">
+                  <span className="text-lg font-semibold text-white group-hover:text-purple-400 transition-colors">
                     {item.title}
                   </span>
                   <motion.div
@@ -83,7 +95,7 @@ const WorkflowShowroom = () => {
                 <AnimatePresence initial={false}>
                   {activeId === item.id && (
                     <motion.div
-                      key={item.id} // This key matches the specific item ID
+                      key={item.id}
                       initial={{ height: 0, opacity: 0 }}
                       animate={{ height: "auto", opacity: 1 }}
                       exit={{ height: 0, opacity: 0 }}

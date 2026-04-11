@@ -1,251 +1,151 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
-// Flexible Media Modal for Case Studies
-const MediaModal = ({ media, title, onClose }: { media: string[]; title: string; onClose: () => void }) => {
-  const [currentIndex, setCurrentIndex] = useState(0);
-
-  const nextMedia = () => setCurrentIndex((prev) => (prev + 1) % media.length);
-  const prevMedia = () => setCurrentIndex((prev) => (prev - 1 + media.length) % media.length);
-
-  const isVideo = (item: string) => !item.startsWith("/");
-
-  return (
-    <AnimatePresence>
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        className="fixed inset-0 bg-black/95 z-[999] flex flex-col items-center justify-center p-8 backdrop-blur-sm"
-        onClick={onClose}
-      >
-        <div className="relative w-full max-w-7xl h-[80vh] flex items-center justify-center" onClick={(e) => e.stopPropagation()}>
-          <button onClick={onClose} className="absolute -top-12 right-0 text-gray-400 hover:text-white text-5xl focus:outline-none z-[1001]">×</button>
-          
-          <div className="absolute top-0 left-0 w-full text-center z-[1000] p-4 text-white">
-            <h3 className="text-xl font-bold text-purple-400">{title}</h3>
-            <p className="text-sm text-gray-400 mt-1">View {currentIndex + 1} of {media.length}</p>
-          </div>
-
-          <button onClick={prevMedia} className="absolute left-4 z-[1001] text-gray-400 hover:text-white text-6xl focus:outline-none">‹</button>
-
-          <motion.div
-            key={currentIndex}
-            initial={{ x: 100, opacity: 0 }}
-            animate={{ x: 0, opacity: 1 }}
-            exit={{ x: -100, opacity: 0 }}
-            className="w-full h-full flex items-center justify-center"
-          >
-            {isVideo(media[currentIndex]) ? (
-              <iframe
-                src={`https://www.youtube.com/embed/${media[currentIndex]}?autoplay=1`}
-                className="w-full max-w-4xl aspect-video rounded-lg shadow-2xl border-0"
-                allow="autoplay; encrypted-media"
-                allowFullScreen
-              />
-            ) : (
-              <img
-                src={media[currentIndex]}
-                alt={`${title} screenshot`}
-                className="max-w-full max-h-full object-contain rounded-lg shadow-2xl"
-              />
-            )}
-          </motion.div>
-
-          <button onClick={nextMedia} className="absolute right-4 z-[1001] text-gray-400 hover:text-white text-6xl focus:outline-none">›</button>
-        </div>
-      </motion.div>
-    </AnimatePresence>
-  );
-};
+const workflows = [
+  {
+    id: "clinic-automation",
+    title: "Clinic AI Patient Journey",
+    media: ["/projects/zap-patientjourneypipeline.jpg", "/projects/clinic-form.jpg", "/projects/clinic-notion.jpg"],
+    description: [
+      "Architected an 8-Zap ecosystem.",
+      "Engineered AI-driven intake classification.",
+      "Automated patient status updates in Notion."
+    ]
+  },
+  {
+    id: "make-budget-ai",
+    title: "Make.com AI Budgeting",
+    media: ["/projects/make-ai-budget.jpg", "0AK3bq1dLzA"],
+    description: [
+      "Telegram-to-Sheets bridge via Make.com.",
+      "AI OCR for automated receipt extraction."
+    ]
+  },
+  {
+    id: "ghl-real-estate",
+    title: "GHL Real Estate Workflow",
+    media: ["pgAn3cSni9U"],
+    description: [
+      "Scalable 0–6 folder architecture.",
+      "Automated deal math and property analysis."
+    ]
+  },
+  {
+    id: "conversation-ai",
+    title: "Conversation AI Integration",
+    media: ["zLhmT3m_yQ8"],
+    description: [
+      "Built a custom property intake agent with AI nodes.",
+      "Trained AI on knowledge bases for property specs.",
+      "Programmed conversational pacing for natural interaction.",
+      "Engineered custom intent routers for data completion.",
+      "Implemented 'Circle-Back' logic for missing details."
+    ]
+  }
+];
 
 const WorkflowShowroom = () => {
-  const [activeId, setActiveId] = useState<string | null>(null);
-  const [activeModalId, setActiveModalId] = useState<string | null>(null);
-  const carouselRef = useRef<HTMLDivElement>(null);
-  const [scrollX, setScrollX] = useState(0);
+  const [selectedWorkflow, setSelectedWorkflow] = useState<typeof workflows[0] | null>(null);
 
-  const workflows = [
-    {
-      id: "clinic-automation",
-      title: "Clinic AI Patient Journey",
-      media: [
-        "/projects/zap-patientjourneypipeline.jpg",
-        "/projects/clinic-form.jpg",
-        "/projects/clinic-notion.jpg",
-        "/projects/clinic-notion2.jpg",
-        "/projects/clinic-notion3.jpg",
-        "/projects/clinic-notion4.jpg",
-        "/projects/clinic-notion5.jpg",
-        "/projects/clinic-1a.jpg",
-        "/projects/clinic-1b.jpg",
-        "/projects/clinic-2a.jpg",
-        "/projects/clinic-2b.jpg",
-        "/projects/clinic-2c.jpg",
-        "/projects/clinic-3a.jpg",
-      ],
-      description: [
-        "Architected an 8-Zap ecosystem connecting Notion, Calendly, and Gmail.",
-        "Engineered an AI-driven intake classifier for patient routing.",
-        "Implemented automated 'Drip-Reminders' and confirmations.",
-        "Built a 'Two-Way Sync' for patient email replies in Notion.",
-        "Automated post-appointment feedback and sentiment analysis.",
-      ],
-    },
-    {
-      id: "make-budget-ai",
-      title: "Make.com AI Budget Automation",
-      media: ["/projects/make-ai-budget.jpg", "0AK3bq1dLzA"],
-      description: [
-        "Architected a Telegram-to-Google Sheets bridge via Make.com.",
-        "Engineered a dual-router system for text vs. photo entries.",
-        "Integrated AI OCR to extract total prices from receipt images.",
-        "Built auto-populating logic for credit card trackers.",
-        "Automated monthly spending calculations for instant oversight.",
-      ],
-    },
-    {
-      id: "ghl-real-estate",
-      title: "GHL Real Estate Workflow",
-      media: ["pgAn3cSni9U"],
-      description: [
-        "Implemented a scalable 0–6 folder architecture.",
-        "Automated intake process using centralized webhooks.",
-        "Built custom calculators for property analysis logic.",
-        "Streamlined contract generation within the GHL ecosystem.",
-        "Integrated logic to move leads through the sales pipeline.",
-      ],
-    },
-    {
-      id: "conversation-ai",
-      title: "Conversation AI Integration",
-      media: ["zLhmT3m_yQ8"],
-      description: [
-        "Built a custom property intake agent with AI nodes.",
-        "Trained AI on knowledge bases for property specs.",
-        "Programmed conversational pacing for natural interaction.",
-        "Engineered custom intent routers for data completion.",
-        "Implemented 'Circle-Back' logic for missing details.",
-      ],
-    },
-  ];
-
-  const scroll = (direction: 'left' | 'right') => {
-    if (carouselRef.current) {
-      const { scrollLeft, clientWidth } = carouselRef.current;
-      const scrollTo = direction === 'left' ? scrollLeft - (clientWidth / 1.5) : scrollLeft + (clientWidth / 1.5);
-      carouselRef.current.scrollTo({ left: scrollTo, behavior: 'smooth' });
-    }
-  };
-
-  const handleScroll = () => {
-    if (carouselRef.current) {
-      setScrollX(carouselRef.current.scrollLeft);
-    }
-  };
-
-  const currentModalItem = workflows.find(item => item.id === activeModalId);
+  // Duplicate cards for seamless infinite loop
+  const duplicatedWorkflows = [...workflows, ...workflows, ...workflows];
 
   return (
     <section id="showroom" className="py-20 bg-[#0a0a0a] overflow-hidden">
-      <div className="max-w-7xl mx-auto px-4 relative">
-        <h2 className="text-center text-4xl font-bold text-purple-500 mb-12">Workflow Showroom</h2>
+      <div className="max-w-7xl mx-auto px-4 mb-12">
+        <h2 className="text-center text-4xl font-bold text-white tracking-tight">
+          Workflow <span className="text-purple-500 italic">Showroom</span>
+        </h2>
+      </div>
 
-        {/* Manual Navigation Arrows */}
-        <button 
-          onClick={() => scroll('left')} 
-          className="absolute left-0 top-[40%] -translate-y-1/2 z-30 bg-orange-500 p-4 rounded-full text-white shadow-2xl hover:bg-orange-600 transition-all active:scale-90 ml-4 hidden lg:block"
-        >
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><polyline points="15 18 9 12 15 6"></polyline></svg>
-        </button>
-        
-        <button 
-          onClick={() => scroll('right')} 
-          className="absolute right-0 top-[40%] -translate-y-1/2 z-30 bg-orange-500 p-4 rounded-full text-white shadow-2xl hover:bg-orange-600 transition-all active:scale-90 mr-4 hidden lg:block"
-        >
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><polyline points="9 18 15 12 9 6"></polyline></svg>
-        </button>
+      {/* Infinite Moving Track */}
+      <div className="relative flex items-center">
+        {/* Gradients for "Fade In/Out" look */}
+        <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-[#0a0a0a] to-transparent z-10" />
+        <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-[#0a0a0a] to-transparent z-10" />
 
-        {/* Scrollable Track */}
-        <div 
-          ref={carouselRef}
-          onScroll={handleScroll}
-          className="flex overflow-x-auto gap-8 pb-16 snap-x snap-mandatory no-scrollbar scroll-smooth cursor-grab active:cursor-grabbing"
-          style={{ 
-            scrollbarWidth: 'none', 
-            msOverflowStyle: 'none',
-            WebkitOverflowScrolling: 'touch' 
+        <motion.div
+          className="flex gap-6"
+          animate={{ x: ["0%", "-33.33%"] }}
+          transition={{
+            ease: "linear",
+            duration: 30,
+            repeat: Infinity,
           }}
+          whileHover={{ animationPlayState: "paused" }} // Stops moving when user hovers to look
         >
-          {workflows.map((item) => (
-            <motion.div 
-              key={item.id} 
-              className="flex-shrink-0 w-[85vw] md:w-[480px] snap-center bg-[#161616] rounded-3xl overflow-hidden border border-white/10 shadow-2xl flex flex-col"
+          {duplicatedWorkflows.map((item, index) => (
+            <motion.div
+              key={`${item.id}-${index}`}
+              className="flex-shrink-0 w-[300px] md:w-[350px] bg-[#161616] rounded-2xl overflow-hidden border border-white/5 shadow-xl cursor-pointer group"
+              onClick={() => setSelectedWorkflow(item)}
             >
-              {/* Image Preview / Trigger */}
-              <div 
-                className="aspect-video w-full bg-black relative group cursor-pointer overflow-hidden" 
-                onClick={() => setActiveModalId(item.id)}
-              >
-                <img 
-                  src={item.media[0].startsWith("/") ? item.media[0] : `https://img.youtube.com/vi/${item.media[0]}/maxresdefault.jpg`} 
-                  className="w-full h-full object-cover opacity-80 group-hover:scale-105 transition-transform duration-500" 
+              <div className="aspect-video w-full bg-black relative overflow-hidden">
+                <img
+                  src={item.media[0].startsWith("/") ? item.media[0] : `https://img.youtube.com/vi/${item.media[0]}/maxresdefault.jpg`}
+                  className="w-full h-full object-cover opacity-70 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500"
                   alt={item.title}
                 />
-                <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity z-10 text-white">
-                   <span className="border border-white/50 bg-black/20 backdrop-blur-md px-6 py-2 rounded-full uppercase tracking-widest text-xs font-bold">
-                     View Deep Dive
-                   </span>
-                </div>
+                <div className="absolute inset-0 bg-purple-600/20 opacity-0 group-hover:opacity-100 transition-opacity" />
               </div>
 
-              {/* Accordion List */}
-              <div className="p-8">
-                <button 
-                  onClick={() => setActiveId(activeId === item.id ? null : item.id)} 
-                  className="flex items-center justify-between w-full text-left"
-                >
-                  <span className="text-2xl font-bold text-white tracking-tight">{item.title}</span>
-                  <motion.div 
-                    animate={{ rotate: activeId === item.id ? 180 : 0 }} 
-                    className="text-purple-500 bg-purple-500/10 p-2 rounded-lg"
-                  >
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><polyline points="6 9 12 15 18 9"></polyline></svg>
-                  </motion.div>
-                </button>
-
-                <AnimatePresence>
-                  {activeId === item.id && (
-                    <motion.div 
-                      initial={{ height: 0, opacity: 0 }} 
-                      animate={{ height: "auto", opacity: 1 }} 
-                      exit={{ height: 0, opacity: 0 }} 
-                      className="overflow-hidden"
-                    >
-                      <ul className="mt-8 space-y-5 border-t border-white/5 pt-8">
-                        {item.description.map((bullet, i) => (
-                          <li key={i} className="text-gray-400 text-sm flex items-start">
-                            <span className="text-orange-500 mr-4 mt-1.5 text-xs">■</span>
-                            <span className="leading-relaxed">{bullet}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
+              <div className="p-5 flex items-center justify-between">
+                <span className="text-lg font-bold text-white truncate">{item.title}</span>
+                <div className="bg-purple-500/10 p-2 rounded-full text-purple-400">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M7 13l5 5 5-5M7 6l5 5 5-5" /></svg>
+                </div>
               </div>
             </motion.div>
           ))}
-        </div>
+        </motion.div>
       </div>
 
-      {activeModalId && currentModalItem && (
-        <MediaModal 
-          media={currentModalItem.media} 
-          title={currentModalItem.title} 
-          onClose={() => setActiveModalId(null)} 
-        />
-      )}
+      {/* Detail Modal (Fixes the "Dropdown breaks layout" issue) */}
+      <AnimatePresence>
+        {selectedWorkflow && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black/90 z-[100] flex items-center justify-center p-4 backdrop-blur-md"
+            onClick={() => setSelectedWorkflow(null)}
+          >
+            <motion.div
+              initial={{ scale: 0.9, y: 20 }}
+              animate={{ scale: 1, y: 0 }}
+              className="bg-[#1c1c1c] w-full max-w-2xl rounded-3xl overflow-hidden border border-purple-500/30 shadow-2xl"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="p-8">
+                <div className="flex justify-between items-start mb-6">
+                  <h3 className="text-3xl font-bold text-white leading-tight">
+                    {selectedWorkflow.title}
+                  </h3>
+                  <button onClick={() => setSelectedWorkflow(null)} className="text-gray-500 hover:text-white transition-colors">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                  </button>
+                </div>
+
+                <ul className="space-y-4 mb-8">
+                  {selectedWorkflow.description.map((bullet, i) => (
+                    <li key={i} className="flex items-start text-gray-300">
+                      <span className="text-purple-500 mr-4 mt-1">●</span>
+                      <span className="text-lg">{bullet}</span>
+                    </li>
+                  ))}
+                </ul>
+
+                <button 
+                  className="w-full bg-purple-600 hover:bg-purple-500 text-white font-bold py-4 rounded-xl transition-all uppercase tracking-widest shadow-lg shadow-purple-600/20"
+                  onClick={() => {/* Trigger existing Media Modal logic here */}}
+                >
+                  View Full Case Study
+                </button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </section>
   );
 };

@@ -1,7 +1,7 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
-// Flexible Media Modal: Handles both Images and YouTube Videos
+// Flexible Media Modal for Case Studies
 const MediaModal = ({ media, title, onClose }: { media: string[]; title: string; onClose: () => void }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -63,6 +63,7 @@ const WorkflowShowroom = () => {
   const [activeId, setActiveId] = useState<string | null>(null);
   const [activeModalId, setActiveModalId] = useState<string | null>(null);
   const carouselRef = useRef<HTMLDivElement>(null);
+  const [scrollX, setScrollX] = useState(0);
 
   const workflows = [
     {
@@ -132,29 +133,35 @@ const WorkflowShowroom = () => {
   const scroll = (direction: 'left' | 'right') => {
     if (carouselRef.current) {
       const { scrollLeft, clientWidth } = carouselRef.current;
-      const scrollTo = direction === 'left' ? scrollLeft - clientWidth : scrollLeft + clientWidth;
+      const scrollTo = direction === 'left' ? scrollLeft - (clientWidth / 1.5) : scrollLeft + (clientWidth / 1.5);
       carouselRef.current.scrollTo({ left: scrollTo, behavior: 'smooth' });
+    }
+  };
+
+  const handleScroll = () => {
+    if (carouselRef.current) {
+      setScrollX(carouselRef.current.scrollLeft);
     }
   };
 
   const currentModalItem = workflows.find(item => item.id === activeModalId);
 
   return (
-    <section id="showroom" className="py-20 bg-[#0a0a0a]">
+    <section id="showroom" className="py-20 bg-[#0a0a0a] overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 relative">
         <h2 className="text-center text-4xl font-bold text-purple-500 mb-12">Workflow Showroom</h2>
 
-        {/* Carousel Navigation */}
+        {/* Manual Navigation Arrows */}
         <button 
           onClick={() => scroll('left')} 
-          className="absolute left-0 top-1/2 -translate-y-1/2 z-20 bg-orange-500 p-3 rounded-full text-white shadow-lg hover:bg-orange-600 transition-colors ml-2 hidden md:block"
+          className="absolute left-0 top-[40%] -translate-y-1/2 z-30 bg-orange-500 p-4 rounded-full text-white shadow-2xl hover:bg-orange-600 transition-all active:scale-90 ml-4 hidden lg:block"
         >
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><polyline points="15 18 9 12 15 6"></polyline></svg>
         </button>
         
         <button 
           onClick={() => scroll('right')} 
-          className="absolute right-0 top-1/2 -translate-y-1/2 z-20 bg-orange-500 p-3 rounded-full text-white shadow-lg hover:bg-orange-600 transition-colors mr-2 hidden md:block"
+          className="absolute right-0 top-[40%] -translate-y-1/2 z-30 bg-orange-500 p-4 rounded-full text-white shadow-2xl hover:bg-orange-600 transition-all active:scale-90 mr-4 hidden lg:block"
         >
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><polyline points="9 18 15 12 9 6"></polyline></svg>
         </button>
@@ -162,35 +169,47 @@ const WorkflowShowroom = () => {
         {/* Scrollable Track */}
         <div 
           ref={carouselRef}
-          className="flex overflow-x-auto gap-8 pb-12 snap-x snap-mandatory no-scrollbar scroll-smooth"
-          style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+          onScroll={handleScroll}
+          className="flex overflow-x-auto gap-8 pb-16 snap-x snap-mandatory no-scrollbar scroll-smooth cursor-grab active:cursor-grabbing"
+          style={{ 
+            scrollbarWidth: 'none', 
+            msOverflowStyle: 'none',
+            WebkitOverflowScrolling: 'touch' 
+          }}
         >
           {workflows.map((item) => (
             <motion.div 
               key={item.id} 
-              className="flex-shrink-0 w-[85vw] md:w-[450px] snap-center bg-[#161616] rounded-2xl overflow-hidden border border-white/10 shadow-2xl flex flex-col"
+              className="flex-shrink-0 w-[85vw] md:w-[480px] snap-center bg-[#161616] rounded-3xl overflow-hidden border border-white/10 shadow-2xl flex flex-col"
             >
+              {/* Image Preview / Trigger */}
               <div 
-                className="aspect-video w-full bg-black relative group cursor-pointer" 
+                className="aspect-video w-full bg-black relative group cursor-pointer overflow-hidden" 
                 onClick={() => setActiveModalId(item.id)}
               >
                 <img 
                   src={item.media[0].startsWith("/") ? item.media[0] : `https://img.youtube.com/vi/${item.media[0]}/maxresdefault.jpg`} 
-                  className="w-full h-full object-cover opacity-80" 
+                  className="w-full h-full object-cover opacity-80 group-hover:scale-105 transition-transform duration-500" 
                   alt={item.title}
                 />
-                <div className="absolute inset-0 bg-black/60 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity z-10 text-white">
-                   <span className="border border-white px-6 py-2 rounded-full uppercase tracking-wider text-sm font-bold">Explore Workflow</span>
+                <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity z-10 text-white">
+                   <span className="border border-white/50 bg-black/20 backdrop-blur-md px-6 py-2 rounded-full uppercase tracking-widest text-xs font-bold">
+                     View Deep Dive
+                   </span>
                 </div>
               </div>
 
-              <div className="p-6">
+              {/* Accordion List */}
+              <div className="p-8">
                 <button 
                   onClick={() => setActiveId(activeId === item.id ? null : item.id)} 
-                  className="flex items-center justify-between w-full text-left group"
+                  className="flex items-center justify-between w-full text-left"
                 >
-                  <span className="text-xl font-semibold text-white group-hover:text-purple-400 transition-colors">{item.title}</span>
-                  <motion.div animate={{ rotate: activeId === item.id ? 180 : 0 }} className="text-purple-500">
+                  <span className="text-2xl font-bold text-white tracking-tight">{item.title}</span>
+                  <motion.div 
+                    animate={{ rotate: activeId === item.id ? 180 : 0 }} 
+                    className="text-purple-500 bg-purple-500/10 p-2 rounded-lg"
+                  >
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><polyline points="6 9 12 15 18 9"></polyline></svg>
                   </motion.div>
                 </button>
@@ -203,10 +222,10 @@ const WorkflowShowroom = () => {
                       exit={{ height: 0, opacity: 0 }} 
                       className="overflow-hidden"
                     >
-                      <ul className="mt-6 space-y-4 border-t border-white/5 pt-6">
+                      <ul className="mt-8 space-y-5 border-t border-white/5 pt-8">
                         {item.description.map((bullet, i) => (
                           <li key={i} className="text-gray-400 text-sm flex items-start">
-                            <span className="text-purple-500 mr-3 mt-1 text-xs">•</span>
+                            <span className="text-orange-500 mr-4 mt-1.5 text-xs">■</span>
                             <span className="leading-relaxed">{bullet}</span>
                           </li>
                         ))}

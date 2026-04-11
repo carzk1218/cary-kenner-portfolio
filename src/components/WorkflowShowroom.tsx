@@ -2,11 +2,12 @@ import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 const WorkflowShowroom = () => {
-  // Initialize as null so nothing is open by default
+  // Use null as the default state
   const [openIndex, setOpenIndex] = useState<number | null>(null);
 
   const workflows = [
     {
+      id: "ghl-workflow",
       title: "GHL Real Estate Workflow",
       videoId: "pgAn3cSni9U",
       description: [
@@ -19,6 +20,7 @@ const WorkflowShowroom = () => {
       ],
     },
     {
+      id: "conv-ai",
       title: "Conversation AI Integration",
       videoId: "zLhmT3m_yQ8",
       description: [
@@ -32,11 +34,6 @@ const WorkflowShowroom = () => {
     },
   ];
 
-  const toggleAccordion = (index: number) => {
-    // If the clicked one is already open, close it. Otherwise, open the new one.
-    setOpenIndex(openIndex === index ? null : index);
-  };
-
   return (
     <section id="showroom" className="py-20 bg-[#0a0a0a]">
       <div className="max-w-6xl mx-auto px-4">
@@ -47,70 +44,72 @@ const WorkflowShowroom = () => {
         >
           Workflow Showroom
         </motion.h2>
-        <p className="text-center text-gray-400 mb-12 max-w-2xl mx-auto">
-          Technical walkthroughs of automated systems built for real estate scale and efficiency.
-        </p>
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 mt-12">
+          {workflows.map((item, index) => {
+            const isOpen = openIndex === index;
+            
+            return (
+              <motion.div 
+                key={item.id}
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                className="bg-[#161616] rounded-2xl overflow-hidden border border-white/10 shadow-2xl flex flex-col"
+              >
+                {/* Video Container */}
+                <div className="aspect-video w-full bg-black">
+                  <iframe
+                    src={`https://www.youtube.com/embed/${item.videoId}`}
+                    className="w-full h-full border-0"
+                    allowFullScreen
+                    title={item.title}
+                  />
+                </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-          {workflows.map((item, index) => (
-            <motion.div 
-              key={index}
-              initial={{ opacity: 0, scale: 0.95 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              className="bg-[#161616] rounded-2xl overflow-hidden border border-white/10 shadow-2xl flex flex-col"
-            >
-              {/* Video Player */}
-              <div className="aspect-video w-full bg-black">
-                <iframe
-                  src={`https://www.youtube.com/embed/${item.videoId}`}
-                  className="w-full h-full border-0"
-                  allowFullScreen
-                  title={item.title}
-                />
-              </div>
-
-              {/* Accordion Content */}
-              <div className="p-6 flex-grow">
-                <button
-                  onClick={() => toggleAccordion(index)}
-                  className="flex items-center justify-between w-full text-left group focus:outline-none"
-                >
-                  <h3 className="text-xl font-semibold text-white group-hover:text-purple-400 transition-colors">
-                    {item.title}
-                  </h3>
-                  <motion.div
-                    animate={{ rotate: openIndex === index ? 180 : 0 }}
-                    className="text-purple-500"
+                {/* Text Content */}
+                <div className="p-6">
+                  <button
+                    onClick={() => setOpenIndex(isOpen ? null : index)}
+                    className="flex items-center justify-between w-full text-left focus:outline-none group"
                   >
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <polyline points="6 9 12 15 18 9"></polyline>
-                    </svg>
-                  </motion.div>
-                </button>
-
-                <AnimatePresence initial={false}>
-                  {openIndex === index && (
+                    <h3 className="text-xl font-semibold text-white group-hover:text-purple-400 transition-colors">
+                      {item.title}
+                    </h3>
                     <motion.div
-                      key="content"
-                      initial={{ height: 0, opacity: 0 }}
-                      animate={{ height: "auto", opacity: 1 }}
-                      exit={{ height: 0, opacity: 0 }}
-                      transition={{ duration: 0.3, ease: "easeInOut" }}
+                      animate={{ rotate: isOpen ? 180 : 0 }}
+                      className="text-purple-500"
                     >
-                      <ul className="mt-4 space-y-3 border-t border-white/5 pt-4">
-                        {item.description.map((bullet, i) => (
-                          <li key={i} className="text-gray-400 text-sm flex items-start">
-                            <span className="text-purple-500 mr-2">•</span>
-                            {bullet}
-                          </li>
-                        ))}
-                      </ul>
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                        <polyline points="6 9 12 15 18 9"></polyline>
+                      </svg>
                     </motion.div>
-                  )}
-                </AnimatePresence>
-              </div>
-            </motion.div>
-          ))}
+                  </button>
+
+                  <AnimatePresence initial={false}>
+                    {isOpen && (
+                      <motion.div
+                        key={`content-${item.id}`} // Unique key is critical here
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: "auto", opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.3, ease: "circOut" }}
+                        className="overflow-hidden"
+                      >
+                        <ul className="mt-6 space-y-4 border-t border-white/5 pt-6">
+                          {item.description.map((bullet, i) => (
+                            <li key={i} className="text-gray-400 text-sm flex items-start">
+                              <span className="text-purple-500 mr-3 mt-1 text-xs">•</span>
+                              <span className="leading-relaxed">{bullet}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+              </motion.div>
+            );
+          })}
         </div>
       </div>
     </section>

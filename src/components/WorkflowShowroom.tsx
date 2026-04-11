@@ -75,3 +75,5 @@ const MediaModal = ({ media, title, onClose }: { media: string[]; title: string;
     </AnimatePresence>
   );
 };
+
+export default WorkflowShowroom;

@@ -25,7 +25,6 @@ const MediaModal = ({ media, title, onClose }: { media: string[]; title: string;
             <p className="text-sm text-gray-500 mt-1 font-mono">{currentIndex + 1} / {media.length}</p>
           </div>
 
-          {/* Navigation Arrows with Solid Dark Backgrounds for Visibility */}
           <button 
             onClick={prevMedia} 
             className="absolute left-2 md:left-4 z-[1001] w-14 h-14 flex items-center justify-center rounded-full bg-black/80 border border-white/10 text-white hover:bg-purple-600 transition-all"
@@ -113,15 +112,15 @@ const WorkflowShowroom = () => {
   ];
 
   return (
-    <section id="showroom" className="py-24 bg-[#0a0a0a]">
-      <div className="max-w-[1500px] mx-auto px-6">
-        <h2 className="text-center text-5xl font-bold text-white mb-20">
+    <section id="showroom" className="py-32 bg-[#0a0a0a]">
+      <div className="max-w-[1600px] mx-auto px-6">
+        <h2 className="text-center text-5xl font-bold text-white mb-24">
           Workflow <span className="text-purple-500 italic">Showroom</span>
         </h2>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-10">
           {workflows.map((item) => (
-            <div key={item.id} className="bg-[#121212] rounded-3xl border border-white/5 shadow-2xl overflow-hidden flex flex-col h-fit">
+            <div key={item.id} className="bg-[#121212] rounded-[2rem] border border-white/5 shadow-2xl overflow-hidden flex flex-col h-fit transition-all duration-300 hover:border-purple-500/30">
               <div 
                 className="aspect-video w-full bg-black relative group cursor-pointer overflow-hidden"
                 onClick={() => setModalData({ media: item.media, title: item.title })}
@@ -132,28 +131,28 @@ const WorkflowShowroom = () => {
                   alt={item.title}
                 />
                 <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-purple-600/10">
-                   <span className="bg-white/10 backdrop-blur-md border border-white/20 px-6 py-2 rounded-full text-xs font-bold uppercase tracking-widest text-white">Open Gallery</span>
+                   <span className="bg-white/10 backdrop-blur-md border border-white/20 px-8 py-3 rounded-full text-xs font-bold uppercase tracking-widest text-white">Open Gallery</span>
                 </div>
               </div>
 
-              <div className="p-6">
+              <div className="p-8">
                 <button 
                   onClick={() => setActiveId(activeId === item.id ? null : item.id)}
                   className="flex items-center justify-between w-full group text-left"
                 >
-                  <span className="text-lg font-bold text-white group-hover:text-purple-400 transition-colors pr-2">{item.title}</span>
-                  <div className={`p-2 rounded-xl transition-all ${activeId === item.id ? 'bg-purple-500 text-white' : 'bg-white/5 text-purple-400'}`}>
-                    <svg className={`w-4 h-4 transform transition-transform ${activeId === item.id ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="3"><path d="M19 9l-7 7-7-7"/></svg>
+                  <span className="text-xl font-bold text-white group-hover:text-purple-400 transition-colors pr-2">{item.title}</span>
+                  <div className={`p-2.5 rounded-xl transition-all ${activeId === item.id ? 'bg-purple-500 text-white shadow-[0_0_15px_rgba(168,85,247,0.4)]' : 'bg-white/5 text-purple-400'}`}>
+                    <svg className={`w-5 h-5 transform transition-transform ${activeId === item.id ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="3"><path d="M19 9l-7 7-7-7"/></svg>
                   </div>
                 </button>
 
                 <AnimatePresence>
                   {activeId === item.id && (
                     <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} className="overflow-hidden">
-                      <ul className="mt-6 space-y-4 border-t border-white/5 pt-6">
+                      <ul className="mt-8 space-y-5 border-t border-white/5 pt-8">
                         {item.description.map((bullet, i) => (
-                          <li key={i} className="text-gray-400 text-sm flex items-start leading-relaxed">
-                            <span className="text-purple-500 mr-3 mt-1.5 text-[8px]">●</span>
+                          <li key={i} className="text-gray-400 text-[0.95rem] flex items-start leading-relaxed">
+                            <span className="text-purple-500 mr-4 mt-1.5 text-[10px]">●</span>
                             {bullet}
                           </li>
                         ))}

@@ -50,7 +50,7 @@ const WorkflowShowroom = () => {
   const workflows = [
     {
       id: "clinic-automation",
-      title: "Clinic AI Patient Journey",
+      title: "Zapier: Clinic AI Patient Journey",
       // References your newly uploaded files in the projects folder
       images: [
         "/projects/zap-patientjourneypipeline.jpg",
@@ -77,7 +77,7 @@ const WorkflowShowroom = () => {
     },
     {
       id: "make-budget-ai",
-      title: "Make.com AI Budget Automation",
+      title: "Make.com: AI Budget Automation",
       videoId: "0AK3bq1dLzA",
       description: [
         "Architected a Telegram-to-Google Sheets bridge for real-time expense tracking via Make.com.",
@@ -89,7 +89,7 @@ const WorkflowShowroom = () => {
     },
     {
       id: "ghl-real-estate",
-      title: "GHL Real Estate Workflow",
+      title: "GHL: Real Estate Workflow",
       videoId: "pgAn3cSni9U",
       description: [
         "Implemented a scalable 0–6 folder architecture for clean system organization.",
@@ -101,7 +101,7 @@ const WorkflowShowroom = () => {
     },
     {
       id: "conversation-ai",
-      title: "Conversation AI Integration",
+      title: "GHL: Conversation AI Integration",
       videoId: "zLhmT3m_yQ8",
       description: [
         "Built a custom property intake agent using a start trigger, AI node, and router.",

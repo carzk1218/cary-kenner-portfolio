@@ -53,15 +53,21 @@ const WorkflowShowroom = () => {
     {
       id: "clinic-automation",
       title: "Zapier: Clinic AI Patient Journey",
-      // Updated with new consistent thumbnail first
       media: [
         "/projects/zapier-clinic-thumb.png",
         "/projects/zap-patientjourneypipeline.jpg",
         "/projects/clinic-form.jpg",
         "/projects/clinic-notion.jpg",
         "/projects/clinic-1a.jpg",
+        "/projects/clinic-1b.jpg",
         "/projects/clinic-2a.jpg",
-        "/projects/clinic-3a.jpg"
+        "/projects/clinic-2b.jpg",
+        "/projects/clinic-2c.jpg",
+        "/projects/clinic-3a.jpg",
+        "/projects/clinic-notion2.jpg",
+        "/projects/clinic-notion3.jpg",
+        "/projects/clinic-notion4.jpg",
+        "/projects/clinic-notion5.jpg"
       ],
       description: [
         "Architected an 8-Zap ecosystem connecting Notion, Calendly, and Gmail.",
@@ -73,7 +79,6 @@ const WorkflowShowroom = () => {
     {
       id: "make-budget-ai",
       title: "Make.com: AI Budget Automation",
-      // Updated with new consistent thumbnail first
       media: [
         "/projects/make-budget-thumb.png",
         "0AK3bq1dLzA"
@@ -124,7 +129,9 @@ const WorkflowShowroom = () => {
                 onClick={() => setModalData({ media: item.media, title: item.title })}
               >
                 <img 
-                  src={item.media[0]} 
+                  src={item.media[0].startsWith("/") 
+                    ? item.media[0] 
+                    : `https://img.youtube.com/vi/${item.media[0]}/maxresdefault.jpg`} 
                   className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity" 
                   alt={item.title}
                 />

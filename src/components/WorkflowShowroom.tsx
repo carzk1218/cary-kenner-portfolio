@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
-// Highly visible gallery modal for deep-dives
 const MediaModal = ({ media, title, onClose }: { media: string[]; title: string; onClose: () => void }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const nextMedia = () => setCurrentIndex((prev) => (prev + 1) % media.length);
@@ -25,17 +24,11 @@ const MediaModal = ({ media, title, onClose }: { media: string[]; title: string;
             <p className="text-sm text-gray-500 mt-1 font-mono">{currentIndex + 1} / {media.length}</p>
           </div>
 
-          <button 
-            onClick={prevMedia} 
-            className="absolute left-2 md:left-4 z-[1001] w-14 h-14 flex items-center justify-center rounded-full bg-black/80 border border-white/10 text-white hover:bg-purple-600 transition-all"
-          >
+          <button onClick={prevMedia} className="absolute left-2 md:left-4 z-[1001] w-14 h-14 flex items-center justify-center rounded-full bg-black/80 border border-white/10 text-white hover:bg-purple-600 transition-all">
             <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="3"><path d="M15 19l-7-7 7-7" /></svg>
           </button>
 
-          <button 
-            onClick={nextMedia} 
-            className="absolute right-2 md:right-4 z-[1001] w-14 h-14 flex items-center justify-center rounded-full bg-black/80 border border-white/10 text-white hover:bg-purple-600 transition-all"
-          >
+          <button onClick={nextMedia} className="absolute right-2 md:right-4 z-[1001] w-14 h-14 flex items-center justify-center rounded-full bg-black/80 border border-white/10 text-white hover:bg-purple-600 transition-all">
             <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="3"><path d="M9 5l7 7-7 7" /></svg>
           </button>
           
@@ -43,7 +36,7 @@ const MediaModal = ({ media, title, onClose }: { media: string[]; title: string;
             {isVideo(media[currentIndex]) ? (
               <iframe src={`https://www.youtube.com/embed/${media[currentIndex]}?autoplay=1`} className="w-full max-w-5xl aspect-video rounded-2xl shadow-2xl border border-white/5" allowFullScreen />
             ) : (
-              <img src={media[currentIndex]} className="max-w-full max-h-full object-contain rounded-xl shadow-2xl" alt="Workflow" />
+              <img src={media[currentIndex]} className="max-w-full max-h-full object-contain rounded-xl shadow-2xl" alt="Workflow Detail" />
             )}
           </motion.div>
         </div>
@@ -59,49 +52,54 @@ const WorkflowShowroom = () => {
   const workflows = [
     {
       id: "clinic-automation",
-      title: "Clinic AI Patient Journey",
+      title: "Zapier: Clinic AI Patient Journey",
+      // Updated with new consistent thumbnail first
       media: [
-        "/projects/zap-patientjourneypipeline.jpg", "/projects/clinic-form.jpg", "/projects/clinic-notion.jpg", 
-        "/projects/clinic-1a.jpg", "/projects/clinic-1b.jpg", "/projects/clinic-2a.jpg", "/projects/clinic-2b.jpg", 
-        "/projects/clinic-2c.jpg", "/projects/clinic-3a.jpg", "/projects/clinic-notion2.jpg", "/projects/clinic-notion3.jpg",
-        "/projects/clinic-notion4.jpg", "/projects/clinic-notion5.jpg"
+        "/projects/zapier-clinic-thumb.png",
+        "/projects/zap-patientjourneypipeline.jpg",
+        "/projects/clinic-form.jpg",
+        "/projects/clinic-notion.jpg",
+        "/projects/clinic-1a.jpg",
+        "/projects/clinic-2a.jpg",
+        "/projects/clinic-3a.jpg"
       ],
       description: [
-        "Notion, Calendly, and Gmail integration via 8-Zap automation.",
-        "Automated patient routing using an AI intake classifier.",
-        "Direct appointment confirmations and drip email reminders.",
-        "Two-way email synchronization within Notion databases.",
-        "Post-visit feedback collection and sentiment analysis."
+        "Architected an 8-Zap ecosystem connecting Notion, Calendly, and Gmail.",
+        "Engineered AI-driven intake classifier for automated patient routing.",
+        "Implemented automated drip-reminders and confirmations.",
+        "Two-way email synchronization within Notion databases."
       ]
     },
     {
       id: "make-budget-ai",
-      title: "Make.com AI Budget Automation",
-      media: ["/projects/make-ai-budget.jpg", "0AK3bq1dLzA"],
+      title: "Make.com: AI Budget Automation",
+      // Updated with new consistent thumbnail first
+      media: [
+        "/projects/make-budget-thumb.png",
+        "0AK3bq1dLzA"
+      ],
       description: [
         "Real-time expense tracking via Telegram and Google Sheets.",
-        "Automated text and photo entry processing.",
-        "AI OCR data extraction from uploaded receipt images.",
-        "Auto-populating trackers for budgets and credit cards.",
-        "Instant monthly spending reports and calculations."
+        "Automated AI OCR data extraction from uploaded receipt images.",
+        "Auto-populating trackers for budgets and credit card balances.",
+        "Instant monthly spending reports and automated calculations."
       ]
     },
     {
       id: "ghl-real-estate",
-      title: "GHL Real Estate Workflow",
-      media: ["pgAn3cSni9U"],
+      title: "GHL: Real Estate Workflow",
+      media: ["/projects/ghl-realestate-thumb.png", "pgAn3cSni9U"],
       description: [
         "Scalable lead management using a 0–6 folder structure.",
         "Automated intake via centralized webhooks.",
         "Property analysis and deal math using custom calculators.",
-        "Contract generation automated within the GHL platform.",
         "Pipeline-based lead progression tracking."
       ]
     },
     {
       id: "conversation-ai",
-      title: "Conversation AI Integration",
-      media: ["zLhmT3m_yQ8"],
+      title: "GHL: Conversation AI Integration",
+      media: ["/projects/ghl-conversation-thumb.png", "zLhmT3m_yQ8"],
       description: [
         "AI property intake agent with custom knowledge base training.",
         "Natural conversational pacing for customer engagement.",
@@ -120,14 +118,14 @@ const WorkflowShowroom = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-10">
           {workflows.map((item) => (
-            <div key={item.id} className="bg-[#121212] rounded-[2rem] border border-white/5 shadow-2xl overflow-hidden flex flex-col h-fit transition-all duration-300 hover:border-purple-500/30">
+            <div key={item.id} className="bg-[#121212] rounded-[2rem] border border-white/5 shadow-2xl overflow-hidden flex flex-col h-fit transition-all duration-300 hover:border-purple-500/30 group">
               <div 
-                className="aspect-video w-full bg-black relative group cursor-pointer overflow-hidden"
+                className="aspect-video w-full bg-black relative cursor-pointer overflow-hidden"
                 onClick={() => setModalData({ media: item.media, title: item.title })}
               >
                 <img 
-                  src={item.media[0].startsWith("/") ? item.media[0] : `https://img.youtube.com/vi/${item.media[0]}/maxresdefault.jpg`} 
-                  className="w-full h-full object-cover opacity-60 group-hover:opacity-100 transition-opacity" 
+                  src={item.media[0]} 
+                  className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity" 
                   alt={item.title}
                 />
                 <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-purple-600/10">
@@ -138,7 +136,7 @@ const WorkflowShowroom = () => {
               <div className="p-8">
                 <button 
                   onClick={() => setActiveId(activeId === item.id ? null : item.id)}
-                  className="flex items-center justify-between w-full group text-left"
+                  className="flex items-center justify-between w-full text-left"
                 >
                   <span className="text-xl font-bold text-white group-hover:text-purple-400 transition-colors pr-2">{item.title}</span>
                   <div className={`p-2.5 rounded-xl transition-all ${activeId === item.id ? 'bg-purple-500 text-white shadow-[0_0_15px_rgba(168,85,247,0.4)]' : 'bg-white/5 text-purple-400'}`}>

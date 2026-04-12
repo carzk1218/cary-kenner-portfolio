@@ -1,97 +1,92 @@
 import { motion } from "framer-motion";
-import { Check, Cpu } from "lucide-react"; 
+import { Check, Cpu, Zap, Activity, ShieldCheck, Globe } from "lucide-react"; 
 
-const ghlCapabilities = [
+const capabilities = [
   {
-    category: "Core Infrastructure & Setup",
+    category: "Infrastructure & Logic",
+    icon: <Cpu className="w-5 h-5 text-purple-500" />,
     items: [
-      "Full Sub-Account Onboarding & Domain Integration",
-      "Custom Snapshot Creation & Deployment",
-      "SaaS Mode Configuration & Stripe Integration",
-      "White-Label Branding & Custom CSS Styling"
+      "Multi-Platform Integration (GHL, Zapier, Make, n8n)",
+      "REST API & Custom Webhook Connectivity",
+      "Complex Workflow Logic & If/Else Branching",
+      "Custom GHL Snapshot Architecture & Deployment"
     ]
   },
   {
-    category: "Advanced Automation & CRM",
+    category: "Advanced AI & Data",
+    icon: <Activity className="w-5 h-5 text-purple-500" />,
     items: [
-      "Complex Workflow Logic with If/Else Branching",
-      "Database Reactivation (DBR) Sequences",
-      "Unified Multi-Channel Inbox Management",
-      "Smart List Segmentation & Lead Management"
+      "AI Intent Routing & Lead Classification",
+      "Real-time CRM & Database Synchronization",
+      "Automated OCR Data Extraction (Receipts/Forms)",
+      "Smart List Segmentation & Predictive Routing"
     ]
   },
   {
-    category: "Funnels & Conversions",
+    category: "Operations & Conversions",
+    icon: <Zap className="w-5 h-5 text-purple-500" />,
     items: [
       "High-Converting Multi-Step Sales Funnels",
-      "Mobile-Responsive Landing Page Design",
-      "A/B Split Testing & Conversion Analytics",
-      "Advanced Forms & Surveys with Conditional Logic"
-    ]
-  },
-  {
-    category: "Operations & Retention",
-    items: [
+      "Automated 0–6 Folder Pipeline Structures",
       "Round-Robin Calendar & Appointment Systems",
-      "Reputation Management & Automated Review Requests",
-      "Gated Membership Areas & Course Portals",
-      "Custom API & Webhook Connectivity"
+      "Conditional Forms & Dynamic Intake Surveys"
     ]
-  }
-];
-
-const automationStack = [
-  {
-    name: "Zapier",
-    desc: "Rapid deployment for connecting 5,000+ apps with enterprise-grade stability.",
-    tag: "Connectivity"
   },
   {
-    name: "Make.com",
-    desc: "Advanced visual automation for complex data mapping and multi-step logic.",
-    tag: "Logic Architect"
-  },
-  {
-    name: "n8n.io",
-    desc: "Technical-first, cost-efficient automation for high-volume data processing.",
-    tag: "Efficiency"
+    category: "Retention & Reporting",
+    icon: <ShieldCheck className="w-5 h-5 text-purple-500" />,
+    items: [
+      "Unified Multi-Channel Inbox Management",
+      "Automated Reputation & Review Systems",
+      "Instant Monthly Budget & Lead Performance Reports",
+      "Gated Membership Areas & Course Portals"
+    ]
   }
 ];
 
 const WorkflowCapability = () => (
-  <section id="work" className="py-24">
-    <div className="container">
-      {/* GHL Section */}
-      <motion.h2
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        className="text-3xl md:text-4xl font-bold text-gradient mb-4"
-      >
-        GoHighLevel Capability
-      </motion.h2>
-      <p className="text-muted-foreground mb-12 max-w-xl">
-        Precision-engineered automations and high-level architectural solutions for scalable businesses.
-      </p>
+  <section id="capabilities" className="py-32 bg-[#0a0a0a]">
+    <div className="max-w-[1400px] mx-auto px-6">
+      <div className="mb-20">
+        <motion.h2
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="text-4xl md:text-5xl font-bold text-white mb-6"
+        >
+          Automation & CRM <span className="text-purple-500 italic">Capabilities</span>
+        </motion.h2>
+        <p className="text-gray-400 text-lg max-w-2xl leading-relaxed">
+          Precision-engineered workflows and architectural solutions designed to scale operations across the full automation stack.
+        </p>
+      </div>
 
-      <div className="grid md:grid-cols-2 gap-8 mb-20">
-        {ghlCapabilities.map((group, i) => (
+      <div className="grid md:grid-cols-2 gap-8">
+        {capabilities.map((group, i) => (
           <motion.div
             key={group.category}
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: i * 0.1 }}
-            className="p-6 rounded-xl border border-border bg-card/50 hover:border-primary/50 transition-colors"
+            className="p-8 rounded-[2rem] border border-white/5 bg-[#121212] hover:border-purple-500/30 transition-all group"
           >
-            <h3 className="text-xl font-semibold text-foreground mb-4 border-b border-border pb-2">
-              {group.category}
-            </h3>
-            <ul className="space-y-3">
+            <div className="flex items-center gap-4 mb-8">
+              <div className="p-3 rounded-xl bg-purple-500/10 border border-purple-500/20 group-hover:scale-110 transition-transform">
+                {group.icon}
+              </div>
+              <h3 className="text-2xl font-bold text-white uppercase tracking-tight">
+                {group.category}
+              </h3>
+            </div>
+            
+            <ul className="grid grid-cols-1 gap-y-5">
               {group.items.map((item, index) => (
-                <li key={index} className="flex items-start gap-3 text-sm text-muted-foreground">
-                  <Check className="w-4 h-4 mt-0.5 text-primary shrink-0" />
-                  <span>{item}</span>
+                <li key={index} className="flex items-start gap-4 text-[1rem] text-gray-400 leading-snug">
+                  <div className="mt-1.5 shrink-0">
+                    <Check className="w-4 h-4 text-purple-500 stroke-[3]" />
+                  </div>
+                  <span className="group-hover:text-gray-200 transition-colors">{item}</span>
                 </li>
               ))}
             </ul>
@@ -99,41 +94,17 @@ const WorkflowCapability = () => (
         ))}
       </div>
 
-      {/* NEW: Automation Ecosystem Section */}
-      <motion.div
+      {/* Trust Bar / Technology Logos Placeholder */}
+      <motion.div 
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
         viewport={{ once: true }}
-        className="pt-12 border-t border-border"
+        className="mt-20 pt-12 border-t border-white/5 flex flex-wrap justify-center gap-10 grayscale opacity-40 hover:grayscale-0 hover:opacity-100 transition-all"
       >
-        <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-4 flex items-center gap-3">
-          <Cpu className="text-primary w-8 h-8" />
-          Technical Automation Ecosystem
-        </h2>
-        <p className="text-muted-foreground mb-10 max-w-2xl">
-          Bridging the gap between your CRM and the world. I specialize in building "no-limit" systems using industry-leading integration engines.
-        </p>
-
-        <div className="grid md:grid-cols-3 gap-6">
-          {automationStack.map((tool, i) => (
-            <motion.div
-              key={tool.name}
-              initial={{ opacity: 0, scale: 0.95 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.1 }}
-              className="p-6 rounded-xl border border-primary/20 bg-primary/5 hover:bg-primary/10 transition-all group"
-            >
-              <div className="text-xs font-bold uppercase tracking-widest text-primary mb-2">{tool.tag}</div>
-              <h4 className="text-xl font-bold text-foreground mb-2 group-hover:text-primary transition-colors">
-                {tool.name}
-              </h4>
-              <p className="text-sm text-muted-foreground leading-relaxed">
-                {tool.desc}
-              </p>
-            </motion.div>
-          ))}
-        </div>
+        <span className="text-white font-black text-xl tracking-tighter uppercase">Make.com</span>
+        <span className="text-white font-black text-xl tracking-tighter uppercase">n8n</span>
+        <span className="text-white font-black text-xl tracking-tighter uppercase">Zapier</span>
+        <span className="text-white font-black text-xl tracking-tighter uppercase">GoHighLevel</span>
       </motion.div>
     </div>
   </section>

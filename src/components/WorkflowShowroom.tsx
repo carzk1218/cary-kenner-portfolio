@@ -88,7 +88,7 @@ const WorkflowShowroom = () => {
     {
       id: "ghl-real-estate",
       title: "GHL: Real Estate Workflow",
-      media: ["/projects/ghl-realestate-thumb.png", "pgAn3cSni9U"],
+      media: ["pgAn3cSni9U"],
       description: [
         "Scalable lead management using a 0–6 folder structure.",
         "Automated intake via centralized webhooks.",
@@ -99,7 +99,7 @@ const WorkflowShowroom = () => {
     {
       id: "conversation-ai",
       title: "GHL: Conversation AI Integration",
-      media: ["/projects/ghl-conversation-thumb.png", "zLhmT3m_yQ8"],
+      media: ["zLhmT3m_yQ8"],
       description: [
         "AI property intake agent with custom knowledge base training.",
         "Natural conversational pacing for customer engagement.",

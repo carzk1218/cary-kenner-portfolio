@@ -81,7 +81,7 @@ const WorkflowShowroom = () => {
       title: "Make.com: AI Budget Automation",
       media: [
         "/projects/make-budget-thumb.png",
-        "/projects/make-ai-budget.jpg"
+        "/projects/make-ai-budget.jpg",
         "0AK3bq1dLzA"
       ],
       description: [

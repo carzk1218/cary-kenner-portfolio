@@ -112,6 +112,50 @@ const WorkflowShowroom = () => {
         "Intent routing to identify and capture missing data.",
         "Automated circle-back logic for incomplete lead details."
       ]
+    },
+    {
+      id: "ghl-voice-havi",
+      title: "GHL: Voice AI - Agent HAVI",
+      media: ["BneAaTbYYAE"],
+      description: [
+        "High-fidelity voice synthesis for automated inbound/outbound calls.",
+        "Direct integration with GHL contacts for personalized greetings.",
+        "Real-time intent detection and appointment scheduling.",
+        "Automated call logging and transcript generation within CRM."
+      ]
+    },
+    {
+      id: "ghl-multi-subaccount",
+      title: "GHL: Outreach & Response Hub",
+      media: ["KxaeHoHinz8"],
+      description: [
+        "Centralized management system for multiple GHL sub-accounts.",
+        "Automated response triggers for cross-account lead engagement.",
+        "Unified dashboard logic for tracking outreach performance.",
+        "Scalable architecture for high-volume agency operations."
+      ]
+    },
+    {
+      id: "ghl-stripe-integration",
+      title: "GHL: Stripe Payment Integration",
+      media: ["uo2pAEpBCtI"],
+      description: [
+        "Seamless Stripe checkout integration for service fulfillment.",
+        "Automated invoice generation and payment tracking.",
+        "Secured webhook handling for instant account provisioning.",
+        "Custom billing triggers based on lead status changes."
+      ]
+    },
+    {
+      id: "ghl-fb-webinar",
+      title: "GHL: FB to Webinar Opt-In",
+      media: ["yTScS5lJsF0"],
+      description: [
+        "Automated lead sync from Facebook Lead Forms to GHL.",
+        "One-click webinar registration with custom landing pages.",
+        "Automated reminder sequences (SMS/Email) to increase show-up rates.",
+        "Dynamic tracking of attendee engagement and follow-up tags."
+      ]
     }
   ];
 

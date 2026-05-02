@@ -40,7 +40,6 @@ const projects = [
   },
 ];
 
-// Duplicate the projects array for a seamless infinite loop
 const carouselItems = [...projects, ...projects];
 
 const WebDesignProject = () => (
@@ -59,15 +58,15 @@ const WebDesignProject = () => (
       </p>
     </div>
 
-    {/* Moving Carousel Container */}
-    <div className="relative group mask-edges">
+    {/* The outer container no longer has the 'group' class */}
+    <div className="relative mask-edges">
       <div className="flex animate-marquee gap-8 py-4">
         {carouselItems.map((project, i) => (
           <div
             key={`${project.title}-${i}`}
-            className="flex-shrink-0 w-[350px] md:w-[450px] group relative flex flex-col rounded-2xl border border-border bg-card overflow-hidden hover:border-primary/50 transition-all duration-500 shadow-xl"
+            // The 'group' class is now strictly on the card itself
+            className="group flex-shrink-0 w-[350px] md:w-[450px] relative flex flex-col rounded-2xl border border-border bg-card overflow-hidden hover:border-primary/50 transition-all duration-500 shadow-xl"
           >
-            {/* Image & Hover Overlay */}
             <div className="h-64 relative overflow-hidden">
               <img
                 src={project.image}
@@ -75,7 +74,7 @@ const WebDesignProject = () => (
                 className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-110"
               />
               
-              {/* Overlay with Description */}
+              {/* This overlay now only triggers when its specific parent card is hovered */}
               <div className="absolute inset-0 bg-black/85 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-center p-8">
                 <p className="text-white text-sm leading-relaxed mb-4">
                   {project.description}
@@ -84,7 +83,6 @@ const WebDesignProject = () => (
               </div>
             </div>
 
-            {/* Always Visible Content */}
             <div className="p-6">
               <div className="mb-2">
                 <span className="text-[10px] uppercase tracking-widest text-primary font-bold">

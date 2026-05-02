@@ -40,8 +40,11 @@ const projects = [
   },
 ];
 
+// Duplicate the projects array for a seamless infinite loop
+const carouselItems = [...projects, ...projects];
+
 const WebDesignProject = () => (
-  <section className="py-24">
+  <section className="py-24 overflow-hidden">
     <div className="container">
       <motion.h2
         initial={{ opacity: 0, y: 20 }}
@@ -54,17 +57,15 @@ const WebDesignProject = () => (
       <p className="text-muted-foreground mb-12 max-w-xl">
         A collection of professional deployments and technical projects showcasing design sensibility and modern development stacks.
       </p>
+    </div>
 
-      {/* Grid Layout */}
-      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {projects.map((project, i) => (
-          <motion.div
-            key={project.title}
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: i * 0.15 }}
-            className="group relative flex flex-col rounded-2xl border border-border bg-card overflow-hidden hover:border-primary/50 transition-all duration-500 shadow-xl"
+    {/* Moving Carousel Container */}
+    <div className="relative group mask-edges">
+      <div className="flex animate-marquee gap-8 py-4">
+        {carouselItems.map((project, i) => (
+          <div
+            key={`${project.title}-${i}`}
+            className="flex-shrink-0 w-[350px] md:w-[450px] group relative flex flex-col rounded-2xl border border-border bg-card overflow-hidden hover:border-primary/50 transition-all duration-500 shadow-xl"
           >
             {/* Image & Hover Overlay */}
             <div className="h-64 relative overflow-hidden">
@@ -76,7 +77,7 @@ const WebDesignProject = () => (
               
               {/* Overlay with Description */}
               <div className="absolute inset-0 bg-black/85 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-center p-8">
-                <p className="text-white text-sm leading-relaxed mb-4 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
+                <p className="text-white text-sm leading-relaxed mb-4">
                   {project.description}
                 </p>
                 <div className="w-12 h-1 bg-primary rounded-full"></div>
@@ -103,10 +104,29 @@ const WebDesignProject = () => (
                 View Live Site <ExternalLink className="w-4 h-4" />
               </a>
             </div>
-          </motion.div>
+          </div>
         ))}
       </div>
     </div>
+
+    <style>{`
+      @keyframes marquee {
+        0% { transform: translateX(0); }
+        100% { transform: translateX(-50%); }
+      }
+      .animate-marquee {
+        display: flex;
+        width: max-content;
+        animation: marquee 40s linear infinite;
+      }
+      .animate-marquee:hover {
+        animation-play-state: paused;
+      }
+      .mask-edges {
+        -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+        mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+      }
+    `}</style>
   </section>
 );
 

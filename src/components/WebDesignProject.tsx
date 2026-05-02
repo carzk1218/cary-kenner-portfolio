@@ -3,6 +3,7 @@ import { ExternalLink } from "lucide-react";
 import geekseek from "@/assets/geekseek.png";
 import daybreakland from "@/assets/daybreakland.png";
 import jollyland from "@/assets/jollylandweb.png";
+import realmomentum from "@/assets/realmomentum.png";
 
 const projects = [
   {
@@ -12,6 +13,14 @@ const projects = [
     stack: "React • Tailwind CSS • Framer Motion",
     description: "A high-conversion real estate platform featuring infinite carousels, automated workflows, and a digital-first approach to land acquisitions.",
     link: "https://jollyland-site.vercel.app/",
+  },
+  {
+    image: realmomentum,
+    alt: "Real Momentum SaaS Platform",
+    title: "Real Momentum: Real Estate SaaS",
+    stack: "HighLevel • CRM Integration • Lead Capturing",
+    description: "An all-in-one automation ecosystem designed for real estate agents, featuring high-converting funnels, automated follow-ups, and a centralized lead management engine.",
+    link: "https://realmomentum.com/index",
   },
   {
     image: daybreakland,
@@ -46,7 +55,7 @@ const WebDesignProject = () => (
         A collection of professional deployments and technical projects showcasing design sensibility and modern development stacks.
       </p>
 
-      {/* 3-Column Grid */}
+      {/* Grid Layout */}
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
         {projects.map((project, i) => (
           <motion.div

@@ -1,6 +1,12 @@
 import { motion } from "framer-motion";
 
-const navLinks = ["Work", "About", "Testimonial", "Contact"];
+// We keep the labels as they are for the UI, but map them to the correct IDs
+const navLinks = [
+  { label: "Work", href: "#showroom" }, // Direct link to your Showroom ID
+  { label: "About", href: "#about" },
+  { label: "Testimonial", href: "#testimonial" },
+  { label: "Contact", href: "#contact" }
+];
 
 const Header = () => {
   return (
@@ -9,7 +15,7 @@ const Header = () => {
       animate={{ y: 0, opacity: 1 }}
       className="fixed top-0 left-0 right-0 z-50 border-b border-border/50 bg-background/80 backdrop-blur-xl"
     >
-      <div className="container flex h-16 items-center justify-between px-4">
+      <div className="container flex h-16 items-center justify-between px-4 mx-auto">
         {/* Brand & Social Icons Group */}
         <div className="flex items-center gap-4">
           <a href="#" className="text-xl font-display font-bold text-gradient tracking-tight">
@@ -44,11 +50,11 @@ const Header = () => {
         <nav className="hidden md:flex items-center gap-8">
           {navLinks.map((link) => (
             <a
-              key={link}
-              href={`#${link.toLowerCase()}`}
+              key={link.label}
+              href={link.href}
               className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
             >
-              {link}
+              {link.label}
             </a>
           ))}
         </nav>

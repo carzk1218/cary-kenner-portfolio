@@ -7,7 +7,7 @@ const testimonials = [
     id: "ben",
     name: "Ben McKenzie",
     role: "Owner, Daybreak Land",
-    quote: "Cary joined Daybreak Land as a Real Estate Acquisitions Specialist. From day one, he didn't just do the job, he re-engineered how the job gets done. He built our entire GoHighLevel system from scratch: every pipeline, every automation, every follow-up sequence. He's a game-changer for any real estate team looking to scale.",
+    quote: "Cary joined Daybreak Land in September 2024 as a Real Estate Acquisitions Specialist, and it was quickly clear that his talent for systems was just as strong as his talent for land deals. When we decided to move our entire operation to GoHighLevel in January 2025, Cary stepped up as the Architect of that transition. He didn't just move data, he built a high-converting machine from the ground up. His ability to blend real estate boots-on-the-ground experience with complex GHL automation is rare. He's a game-changer for any real estate team looking to scale.",
     proofImage: "/testimonials/bentesti.png"
   },
   {

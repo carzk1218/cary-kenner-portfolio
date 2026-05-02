@@ -176,7 +176,7 @@ const WorkflowShowroom = () => {
                 <img 
                   src={item.media[0].startsWith("/") 
                     ? item.media[0] 
-                    : `https://img.youtube.com/vi/${item.media[0]}/maxresdefault.jpg`} 
+                    : `https://img.youtube.com/vi/${item.media[0]}/maxresdefault.jpg?v=1`} 
                   className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity" 
                   alt={item.title}
                 />

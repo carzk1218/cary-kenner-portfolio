@@ -1,45 +1,53 @@
 import { motion } from "framer-motion";
-import { Check, Cpu, Zap, Activity, ShieldCheck, Globe } from "lucide-react"; 
+import { Check, Cpu, Zap, Activity, ShieldCheck } from "lucide-react"; 
 
 const capabilities = [
   {
     category: "Infrastructure & Logic",
     icon: <Cpu className="w-5 h-5 text-purple-500" />,
     items: [
-      "Multi-Platform Integration (GHL, Zapier, Make, n8n)",
-      "REST API & Custom Webhook Connectivity",
-      "Complex Workflow Logic & If/Else Branching",
-      "Custom GHL Snapshot Architecture & Deployment"
+      "Multi-Platform Syncing: Connecting GHL, Zapier, Make, and n8n as one system",
+      "Custom System Design: Building a 'digital brain' to handle data automatically",
+      "Smart Path Logic: Workflows that make decisions based on lead behavior",
+      "Scalable SaaS Foundations: Professional environments built for real estate teams",
+      "Reliable Backend Architecture: IT-grade builds that won't break under pressure",
+      "Inbound Technical Systems: Design that lets leads come to you automatically"
     ]
   },
   {
     category: "Advanced AI & Data",
     icon: <Activity className="w-5 h-5 text-purple-500" />,
     items: [
-      "AI Intent Routing & Lead Classification",
-      "Real-time CRM & Database Synchronization",
-      "Automated OCR Data Extraction (Receipts/Forms)",
-      "Smart List Segmentation & Predictive Routing"
+      "Smart Lead Classification: AI that instantly identifies your 'hot' leads",
+      "24/7 AI Property Agents: Assistants that answer questions and book meetings",
+      "Automated Document Reading: AI that extracts data from forms and receipts",
+      "Customer Intent Detection: AI that knows if a lead wants to buy, sell, or ask",
+      "Real-Time Data Mirroring: Keeping your CRM and sheets perfectly in sync",
+      "Intelligent Follow-Ups: Reaching out at the perfect time to close the deal"
     ]
   },
   {
     category: "Operations & Conversions",
     icon: <Zap className="w-5 h-5 text-purple-500" />,
     items: [
-      "High-Converting Multi-Step Sales Funnels",
-      "Automated 0–6 Folder Pipeline Structures",
-      "Round-Robin Calendar & Appointment Systems",
-      "Conditional Forms & Dynamic Intake Surveys"
+      "Flexible Payment Systems: Stripe and Klarna setups for installment plans",
+      "High-End Web Design: Modern, fast websites built with React and Tailwind",
+      "Lead-Capture Funnels: Landing pages that turn visitors into appointments",
+      "Organized Pipeline Logic: Clean '0–6 folder' deal tracking systems",
+      "Standardized Agency SOPs: Step-by-step training guides for your assistants",
+      "Seamless Tech Deployment: Fast, professional hosting and asset management"
     ]
   },
   {
     category: "Retention & Reporting",
     icon: <ShieldCheck className="w-5 h-5 text-purple-500" />,
     items: [
-      "Unified Multi-Channel Inbox Management",
-      "Automated Reputation & Review Systems",
-      "Instant Monthly Budget & Lead Performance Reports",
-      "Gated Membership Areas & Course Portals"
+      "Instant Client Onboarding: Automating the welcome and setup process",
+      "Centralized Communication Hub: Manage all leads from one single dashboard",
+      "Gated Member Areas: Private portals for training and exclusive content",
+      "Automated Review Collection: Systems that ask happy clients for 5-star ratings",
+      "Automated ROI Reports: Instant monthly performance and budget updates",
+      "Unified Multi-Channel Inbox: All SMS, Email, and Social in one easy place"
     ]
   }
 ];
@@ -94,7 +102,6 @@ const WorkflowCapability = () => (
         ))}
       </div>
 
-      {/* Trust Bar / Technology Logos Placeholder */}
       <motion.div 
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
@@ -105,6 +112,8 @@ const WorkflowCapability = () => (
         <span className="text-white font-black text-xl tracking-tighter uppercase">n8n</span>
         <span className="text-white font-black text-xl tracking-tighter uppercase">Zapier</span>
         <span className="text-white font-black text-xl tracking-tighter uppercase">GoHighLevel</span>
+        <span className="text-white font-black text-xl tracking-tighter uppercase">Stripe</span>
+        <span className="text-white font-black text-xl tracking-tighter uppercase">Klarna</span>
       </motion.div>
     </div>
   </section>

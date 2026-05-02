@@ -70,10 +70,10 @@ const WorkflowShowroom = () => {
         "/projects/clinic-notion5.jpg"
       ],
       description: [
-        "Architected an 8-Zap ecosystem connecting Notion, Calendly, and Gmail.",
-        "Engineered AI-driven intake classifier for automated patient routing.",
-        "Implemented automated drip-reminders and confirmations.",
-        "Two-way email synchronization within Notion databases."
+        "Gap: Manual intake and scattered data across Notion/Gmail.",
+        "Goal: Create a zero-touch journey from booking to entry.",
+        "Build: AI-driven classifier + 8-Zap automation ecosystem.",
+        "Win: 100% automated routing and real-time CRM sync."
       ]
     },
     {
@@ -85,10 +85,10 @@ const WorkflowShowroom = () => {
         "0AK3bq1dLzA"
       ],
       description: [
-        "Real-time expense tracking via Telegram and Google Sheets.",
-        "Automated AI OCR data extraction from uploaded receipt images.",
-        "Auto-populating trackers for budgets and credit card balances.",
-        "Instant monthly spending reports and automated calculations."
+        "Gap: Tedious manual data entry for receipts and expenses.",
+        "Goal: Instant financial tracking via mobile uploads.",
+        "Build: Telegram-to-Sheets bridge with AI OCR extraction.",
+        "Win: Real-time budget updates and automated monthly reports."
       ]
     },
     {
@@ -96,10 +96,10 @@ const WorkflowShowroom = () => {
       title: "GHL: Real Estate Workflow",
       media: ["pgAn3cSni9U"],
       description: [
-        "Scalable lead management using a 0–6 folder structure.",
-        "Automated intake via centralized webhooks.",
-        "Property analysis and deal math using custom calculators.",
-        "Pipeline-based lead progression tracking."
+        "Gap: Unorganized leads and slow property analysis speed.",
+        "Goal: Standardize deal flow and automate initial math.",
+        "Build: 0–6 folder pipeline + centralized webhook logic.",
+        "Win: Faster deal decisions and clear lead tracking."
       ]
     },
     {
@@ -107,10 +107,10 @@ const WorkflowShowroom = () => {
       title: "GHL: Conversation AI Integration",
       media: ["zLhmT3m_yQ8"],
       description: [
-        "AI property intake agent with custom knowledge base training.",
-        "Natural conversational pacing for customer engagement.",
-        "Intent routing to identify and capture missing data.",
-        "Automated circle-back logic for incomplete lead details."
+        "Gap: Missing lead data and slow after-hours response times.",
+        "Goal: Capture property details 24/7 without intervention.",
+        "Build: Trained AI intake agent with intent-based routing.",
+        "Win: Full property profiles captured automatically via chat."
       ]
     },
     {
@@ -118,10 +118,10 @@ const WorkflowShowroom = () => {
       title: "GHL: Voice AI - Agent HAVI",
       media: ["BneAaTbYYAE"],
       description: [
-        "High-fidelity voice synthesis for automated inbound/outbound calls.",
-        "Direct integration with GHL contacts for personalized greetings.",
-        "Real-time intent detection and appointment scheduling.",
-        "Automated call logging and transcript generation within CRM."
+        "Gap: High cost and inconsistency of human cold calling.",
+        "Goal: Natural, high-fidelity voice engagement for leads.",
+        "Build: Direct GHL integration for personalized greetings.",
+        "Win: Automated outbound calling and appointment scheduling."
       ]
     },
     {
@@ -129,10 +129,10 @@ const WorkflowShowroom = () => {
       title: "GHL: Outreach & Response Hub",
       media: ["KxaeHoHinz8"],
       description: [
-        "Centralized management system for multiple GHL sub-accounts.",
-        "Automated response triggers for cross-account lead engagement.",
-        "Unified dashboard logic for tracking outreach performance.",
-        "Scalable architecture for high-volume agency operations."
+        "Gap: Fragmentation when managing multiple agent sub-accounts.",
+        "Goal: A single source of truth for all outreach performance.",
+        "Build: Unified response dashboard with cross-account triggers.",
+        "Win: Scalable operations for high-volume agency management."
       ]
     },
     {
@@ -140,10 +140,10 @@ const WorkflowShowroom = () => {
       title: "GHL: Stripe Payment Integration",
       media: ["uo2pAEpBCtI"],
       description: [
-        "Seamless Stripe checkout integration for service fulfillment.",
-        "Automated invoice generation and payment tracking.",
-        "Secured webhook handling for instant account provisioning.",
-        "Custom billing triggers based on lead status changes."
+        "Gap: Disconnected payment processing and fulfillment.",
+        "Goal: Link revenue directly to service activation logic.",
+        "Build: Secured webhook handling for Stripe/Klarna checkout.",
+        "Win: Automated account provisioning and invoice generation."
       ]
     },
     {
@@ -151,10 +151,10 @@ const WorkflowShowroom = () => {
       title: "GHL: FB to Webinar Opt-In",
       media: ["yTScS5lJsF0"],
       description: [
-        "Automated lead sync from Facebook Lead Forms to GHL.",
-        "One-click webinar registration with custom landing pages.",
-        "Automated reminder sequences (SMS/Email) to increase show-up rates.",
-        "Dynamic tracking of attendee engagement and follow-up tags."
+        "Gap: Poor lead sync and low webinar show-up rates.",
+        "Goal: Maximize attendee engagement via instant follow-up.",
+        "Build: One-click registration path with SMS/Email reminders.",
+        "Win: Increased show-up rates and engagement tracking."
       ]
     }
   ];
@@ -200,12 +200,17 @@ const WorkflowShowroom = () => {
                   {activeId === item.id && (
                     <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} className="overflow-hidden">
                       <ul className="mt-8 space-y-5 border-t border-white/5 pt-8">
-                        {item.description.map((bullet, i) => (
-                          <li key={i} className="text-gray-400 text-[0.95rem] flex items-start leading-relaxed">
-                            <span className="text-purple-500 mr-4 mt-1.5 text-[10px]">●</span>
-                            {bullet}
-                          </li>
-                        ))}
+                        {item.description.map((bullet, i) => {
+                          const [label, content] = bullet.split(": ");
+                          return (
+                            <li key={i} className="text-gray-400 text-[0.95rem] flex items-start leading-relaxed">
+                              <span className="text-purple-500 mr-4 mt-1.5 text-[10px]">●</span>
+                              <span>
+                                <strong className="text-white font-bold">{label}:</strong> {content}
+                              </span>
+                            </li>
+                          );
+                        })}
                       </ul>
                     </motion.div>
                   )}

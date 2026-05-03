@@ -112,8 +112,6 @@ const WorkflowCapability = () => (
         <span className="text-white font-black text-xl tracking-tighter uppercase">n8n</span>
         <span className="text-white font-black text-xl tracking-tighter uppercase">Zapier</span>
         <span className="text-white font-black text-xl tracking-tighter uppercase">GoHighLevel</span>
-        <span className="text-white font-black text-xl tracking-tighter uppercase">Stripe</span>
-        <span className="text-white font-black text-xl tracking-tighter uppercase">Klarna</span>
       </motion.div>
     </div>
   </section>

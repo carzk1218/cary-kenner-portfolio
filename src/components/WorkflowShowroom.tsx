@@ -190,16 +190,25 @@ const WorkflowShowroom = () => {
           Workflow <span className="text-purple-500 italic">Showroom</span>
         </h2>
 
-        {/* Grid container */}
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-10">
-          <AnimatePresence>
-            {displayedWorkflows.map((item) => (
+        {/* 1. Added layout prop to the grid wrapper to animate overall height changes */}
+        <motion.div layout className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-10">
+          <AnimatePresence mode="sync">
+            {/* 2. Extracted 'index' to stagger the new cards row-by-row */}
+            {displayedWorkflows.map((item, index) => (
               <motion.div 
                 key={item.id} 
-                initial={{ opacity: 0, scale: 0.8, y: 30 }}
+                layout // Added layout so cards don't jitter when the container resizes
+                initial={{ opacity: 0, scale: 0.8, y: 50 }}
                 animate={{ opacity: 1, scale: 1, y: 0 }}
                 exit={{ opacity: 0, scale: 0.8, y: 30 }}
-                transition={{ duration: 0.5 }} 
+                transition={{ 
+                  // The layout transition handles the smooth slide down/up
+                  layout: { type: "spring", stiffness: 80, damping: 14 },
+                  // The entry transitions handle the staggered row-by-row pop up
+                  opacity: { duration: 0.3, delay: index >= 4 ? (index - 4) * 0.1 : 0 },
+                  y: { type: "spring", stiffness: 100, damping: 12, delay: index >= 4 ? (index - 4) * 0.1 : 0 },
+                  scale: { type: "spring", stiffness: 100, damping: 12, delay: index >= 4 ? (index - 4) * 0.1 : 0 }
+                }} 
                 className="bg-[#121212] rounded-[2rem] border border-white/5 shadow-2xl overflow-hidden flex flex-col h-fit transition-all duration-300 hover:border-purple-500/30 group"
               >
                 <div 
@@ -258,10 +267,14 @@ const WorkflowShowroom = () => {
               </motion.div>
             ))}
           </AnimatePresence>
-        </div>
+        </motion.div>
 
-        {/* Dynamic See More / Show Less Button */}
-        <div className="mt-16 flex justify-center">
+        {/* 3. Wrapped the button inside a motion.div with layout so it slides smoothly */}
+        <motion.div 
+          layout 
+          transition={{ layout: { type: "spring", stiffness: 80, damping: 14 } }} 
+          className="mt-16 flex justify-center"
+        >
           <button
             onClick={() => setShowAll(!showAll)}
             className={`px-8 py-4 rounded-full border transition-all duration-300 flex items-center gap-3 group font-semibold ${
@@ -282,7 +295,7 @@ const WorkflowShowroom = () => {
               </>
             )}
           </button>
-        </div>
+        </motion.div>
 
       </div>
 

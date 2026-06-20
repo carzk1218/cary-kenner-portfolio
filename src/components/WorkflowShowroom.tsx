@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
-// 1. Explicitly define the types so TypeScript doesn't throw errors
 type WorkflowItem = {
   id: string;
   title: string;
@@ -58,7 +57,6 @@ const WorkflowShowroom = () => {
   const [modalData, setModalData] = useState<{ media: string[]; title: string } | null>(null);
   const [showAll, setShowAll] = useState(false);
 
-  // 2. Apply the WorkflowItem type to our array
   const workflows: WorkflowItem[] = [
     {
       id: "clinic-automation",
@@ -180,24 +178,92 @@ const WorkflowShowroom = () => {
     }
   ];
 
-  // Slice the array based on state
-  const displayedWorkflows = showAll ? workflows : workflows.slice(0, 4);
+  // Split the data architecture permanently into Main vs Extra arrays
+  const primaryWorkflows = workflows.slice(0, 4);
+  const extraWorkflows = workflows.slice(4);
 
-  // NEW: Scroll handler for the Show Less button
   const handleToggleShowAll = () => {
     if (showAll) {
       setShowAll(false);
-      // Wait a tiny bit for the layout shrink to begin, then smooth scroll up
+      // Synchronize the smooth scroll exactly alongside the folding animation
       setTimeout(() => {
         document.getElementById("showroom")?.scrollIntoView({ 
           behavior: "smooth", 
           block: "start" 
         });
-      }, 50);
+      }, 80);
     } else {
       setShowAll(true);
     }
   };
+
+  // Shared card rendering logic to clean up the JSX architecture
+  const renderCard = (item: WorkflowItem, index: number, isExtra: boolean) => (
+    <motion.div 
+      key={item.id} 
+      initial={isExtra ? { opacity: 0, scale: 0.85, y: 50 } : false}
+      animate={{ opacity: 1, scale: 1, y: 0 }}
+      transition={{ 
+        type: "spring", 
+        stiffness: 100, 
+        damping: 14, 
+        delay: isExtra ? index * 0.08 : 0 
+      }}
+      className="bg-[#121212] rounded-[2rem] border border-white/5 shadow-2xl overflow-hidden flex flex-col h-fit transition-all duration-300 hover:border-purple-500/30 group"
+    >
+      <div 
+        className="aspect-video w-full bg-black relative cursor-pointer overflow-hidden"
+        onClick={() => setModalData({ media: item.media, title: item.title })}
+      >
+        <img 
+          src={item.media[0].startsWith("/") ? item.media[0] : `https://img.youtube.com/vi/${item.media[0]}/maxresdefault.jpg`} 
+          className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity" 
+          alt={item.title}
+          onError={(e) => {
+            const target = e.currentTarget;
+            if (target.src.includes("maxresdefault.jpg")) {
+              target.src = `https://img.youtube.com/vi/${item.media[0]}/hqdefault.jpg`;
+            }
+          }}
+        />
+        <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-purple-600/10">
+           <span className="bg-white/10 backdrop-blur-md border border-white/20 px-8 py-3 rounded-full text-xs font-bold uppercase tracking-widest text-white">Open Gallery</span>
+        </div>
+      </div>
+
+      <div className="p-8">
+        <button 
+          onClick={() => setActiveId(activeId === item.id ? null : item.id)}
+          className="flex items-center justify-between w-full text-left"
+        >
+          <span className="text-xl font-bold text-white group-hover:text-purple-400 transition-colors pr-2">{item.title}</span>
+          <div className={`p-2.5 rounded-xl transition-all ${activeId === item.id ? 'bg-purple-500 text-white shadow-[0_0_15px_rgba(168,85,247,0.4)]' : 'bg-white/5 text-purple-400'}`}>
+            <svg className={`w-5 h-5 transform transition-transform ${activeId === item.id ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="3"><path d="M19 9l-7 7-7-7"/></svg>
+          </div>
+        </button>
+
+        <AnimatePresence>
+          {activeId === item.id && (
+            <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} className="overflow-hidden">
+              <ul className="mt-8 space-y-5 border-t border-white/5 pt-8">
+                {item.description.map((bullet, i) => {
+                  const [label, content] = bullet.split(": ");
+                  return (
+                    <li key={i} className="text-gray-400 text-[0.95rem] flex items-start leading-relaxed">
+                      <span className="text-purple-500 mr-4 mt-1.5 text-[10px]">●</span>
+                      <span>
+                        <strong className="text-white font-bold">{label}:</strong> {content}
+                      </span>
+                    </li>
+                  );
+                })}
+              </ul>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+    </motion.div>
+  );
 
   return (
     <section id="showroom" className="py-32 bg-[#0a0a0a]">
@@ -206,93 +272,44 @@ const WorkflowShowroom = () => {
           Workflow <span className="text-purple-500 italic">Showroom</span>
         </h2>
 
-        {/* Layout prop to the grid wrapper to animate overall height changes */}
-        <motion.div layout className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-10">
-          <AnimatePresence mode="sync">
-            {displayedWorkflows.map((item, index) => (
-              <motion.div 
-                key={item.id} 
-                layout
-                initial={{ opacity: 0, scale: 0.8, y: 50 }}
-                animate={{ opacity: 1, scale: 1, y: 0 }}
-                exit={{ 
-                  opacity: 0, 
-                  scale: 0.9, 
-                  y: 20,
-                  transition: { duration: 0.2 } 
-                }}
-                transition={{ 
-                  layout: { type: "spring", stiffness: 90, damping: 15 },
-                  opacity: { duration: 0.3, delay: index >= 4 ? (index - 4) * 0.08 : 0 },
-                  y: { type: "spring", stiffness: 100, damping: 12, delay: index >= 4 ? (index - 4) * 0.08 : 0 },
-                  scale: { type: "spring", stiffness: 100, damping: 12, delay: index >= 4 ? (index - 4) * 0.08 : 0 }
-                }} 
-                className="bg-[#121212] rounded-[2rem] border border-white/5 shadow-2xl overflow-hidden flex flex-col h-fit transition-all duration-300 hover:border-purple-500/30 group"
-              >
-                <div 
-                  className="aspect-video w-full bg-black relative cursor-pointer overflow-hidden"
-                  onClick={() => setModalData({ media: item.media, title: item.title })}
-                >
-                  <img 
-                    src={item.media[0].startsWith("/") 
-                      ? item.media[0] 
-                      : `https://img.youtube.com/vi/${item.media[0]}/maxresdefault.jpg`} 
-                    className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity" 
-                    alt={item.title}
-                    onError={(e) => {
-                      const target = e.currentTarget;
-                      if (target.src.includes("maxresdefault.jpg")) {
-                        target.src = `https://img.youtube.com/vi/${item.media[0]}/hqdefault.jpg`;
-                      }
-                    }}
-                  />
-                  <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-purple-600/10">
-                     <span className="bg-white/10 backdrop-blur-md border border-white/20 px-8 py-3 rounded-full text-xs font-bold uppercase tracking-widest text-white">Open Gallery</span>
-                  </div>
-                </div>
+        {/* SECTION 1: Permanent Top Row (First 4 cards) */}
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-10">
+          {primaryWorkflows.map((item, index) => renderCard(item, index, false))}
+        </div>
 
-                <div className="p-8">
-                  <button 
-                    onClick={() => setActiveId(activeId === item.id ? null : item.id)}
-                    className="flex items-center justify-between w-full text-left"
-                  >
-                    <span className="text-xl font-bold text-white group-hover:text-purple-400 transition-colors pr-2">{item.title}</span>
-                    <div className={`p-2.5 rounded-xl transition-all ${activeId === item.id ? 'bg-purple-500 text-white shadow-[0_0_15px_rgba(168,85,247,0.4)]' : 'bg-white/5 text-purple-400'}`}>
-                      <svg className={`w-5 h-5 transform transition-transform ${activeId === item.id ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="3"><path d="M19 9l-7 7-7-7"/></svg>
-                    </div>
-                  </button>
+        {/* SECTION 2: Collapsible Accordion Wrapper for Extra Rows */}
+        <AnimatePresence>
+          {showAll && (
+            <motion.div 
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ 
+                height: "auto", 
+                opacity: 1,
+                transition: {
+                  height: { type: "spring", stiffness: 80, damping: 15 },
+                  opacity: { duration: 0.4 }
+                }
+              }}
+              exit={{ 
+                height: 0, 
+                opacity: 0,
+                transition: {
+                  height: { type: "spring", stiffness: 100, damping: 18 },
+                  opacity: { duration: 0.25 }
+                }
+              }}
+              className="overflow-hidden"
+            >
+              {/* Extra Grid injection inside the accordion */}
+              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-10 mt-10">
+                {extraWorkflows.map((item, index) => renderCard(item, index, true))}
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
 
-                  <AnimatePresence>
-                    {activeId === item.id && (
-                      <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} className="overflow-hidden">
-                        <ul className="mt-8 space-y-5 border-t border-white/5 pt-8">
-                          {item.description.map((bullet, i) => {
-                            const [label, content] = bullet.split(": ");
-                            return (
-                              <li key={i} className="text-gray-400 text-[0.95rem] flex items-start leading-relaxed">
-                                <span className="text-purple-500 mr-4 mt-1.5 text-[10px]">●</span>
-                                <span>
-                                  <strong className="text-white font-bold">{label}:</strong> {content}
-                                </span>
-                              </li>
-                            );
-                          })}
-                        </ul>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </div>
-              </motion.div>
-            ))}
-          </AnimatePresence>
-        </motion.div>
-
-        {/* Button Wrapper */}
-        <motion.div 
-          layout 
-          transition={{ layout: { type: "spring", stiffness: 90, damping: 15 } }} 
-          className="mt-16 flex justify-center"
-        >
+        {/* Interactive Action Button: Stays locked in standard DOM flow */}
+        <div className="mt-16 flex justify-center">
           <button
             onClick={handleToggleShowAll}
             className={`px-8 py-4 rounded-full border transition-all duration-300 flex items-center gap-3 group font-semibold ${
@@ -313,7 +330,7 @@ const WorkflowShowroom = () => {
               </>
             )}
           </button>
-        </motion.div>
+        </div>
 
       </div>
 

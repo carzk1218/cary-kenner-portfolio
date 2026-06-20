@@ -1,17 +1,16 @@
+import { useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { ExternalLink } from "lucide-react";
 import geekseek from "@/assets/geekseek.png";
 import daybreakland from "@/assets/daybreakland.png";
 import jollyland from "@/assets/jollylandweb.png";
 import realmomentum from "@/assets/realmomentum.png";
-// New Imports
 import xevaventures from "@/assets/xevaventures.png";
 import acuforsyth from "@/assets/acuforsyth.png";
 import createclients from "@/assets/createclients.png";
 import fabcoach from "@/assets/fab.coach.png";
 
 const projects = [
-  // New Projects (Placing them first)
   {
     image: acuforsyth,
     alt: "Shanghai Acupuncture Clinic Website",
@@ -48,7 +47,6 @@ const projects = [
       "A premium coaching landing page designed on the HighLevel platform, enhanced with CSS overrides to create a distinct, high-end visual brand presentation.",
     link: "https://fab.coach/",
   },
-  // Existing Original Projects
   {
     image: jollyland,
     alt: "JollyLand Real Estate Platform",
@@ -87,93 +85,232 @@ const projects = [
   },
 ];
 
-// Duplicating for the infinite loop effect
 const carouselItems = [...projects, ...projects];
 
-const WebDesignProject = () => (
-  <section className="py-24 overflow-hidden">
-    <div className="container">
-      <motion.h2
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        className="text-3xl md:text-4xl font-bold text-gradient mb-4"
-      >
-        Web Design
-      </motion.h2>
-      <p className="text-muted-foreground mb-12 max-w-xl">
-        A collection of professional deployments and technical projects
-        showcasing design sensibility and modern development stacks.
-      </p>
-    </div>
+const WebDesignProject = () => {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const isDown = useRef(false);
+  const isHovered = useRef(false);
+  const startX = useRef(0);
+  const scrollLeft = useRef(0);
+  const hasMoved = useRef(false);
+  const animationRef = useRef<number | null>(null);
 
-    <div className="relative mask-edges">
-      {/* We increase the width of the marquee container to max-content to accommodate all items */}
-      <div className="flex animate-marquee gap-8 py-4">
-        {carouselItems.map((project, i) => (
-          <div
-            key={`${project.title}-${i}`}
-            className="group flex-shrink-0 w-[350px] md:w-[450px] relative flex flex-col rounded-2xl border border-border bg-card overflow-hidden hover:border-primary/50 transition-all duration-500 shadow-xl"
-          >
-            <div className="h-64 relative overflow-hidden">
-              <img
-                src={project.image}
-                alt={project.alt}
-                className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-110"
-              />
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
 
-              <div className="absolute inset-0 bg-black/85 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-center p-8">
-                <p className="text-white text-sm leading-relaxed mb-4">
-                  {project.description}
-                </p>
-                <div className="w-12 h-1 bg-primary rounded-full"></div>
-              </div>
-            </div>
+    const updateLoop = () => {
+      // Only autoplay if user is not dragging and not hovering
+      if (!isDown.current && !isHovered.current) {
+        container.scrollLeft += 0.8; // Control your autoplay speed here
 
-            <div className="p-6">
-              <div className="mb-2">
-                <span className="text-[10px] uppercase tracking-widest text-primary font-bold">
-                  {project.stack}
-                </span>
-              </div>
-              <h3 className="text-xl font-semibold text-foreground mb-4">
-                {project.title}
-              </h3>
+        const halfWidth = container.scrollWidth / 2;
+        if (container.scrollLeft >= halfWidth) {
+          container.scrollLeft = 0;
+        }
+      }
+      animationRef.current = requestAnimationFrame(updateLoop);
+    };
 
-              <a
-                href={project.link}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 text-sm font-medium text-foreground hover:text-primary transition-colors border-b border-transparent hover:border-primary pb-1 w-fit"
-              >
-                View Live Site <ExternalLink className="w-4 h-4" />
-              </a>
-            </div>
-          </div>
-        ))}
+    animationRef.current = requestAnimationFrame(updateLoop);
+
+    return () => {
+      if (animationRef.current) cancelAnimationFrame(animationRef.current);
+    };
+  }, []);
+
+  // Mouse Drag Handlers
+  const handleMouseDown = (e: React.MouseEvent) => {
+    const container = containerRef.current;
+    if (!container) return;
+    isDown.current = true;
+    hasMoved.current = false;
+    startX.current = e.pageX - container.offsetLeft;
+    scrollLeft.current = container.scrollLeft;
+  };
+
+  const handleMouseLeave = () => {
+    isDown.current = false;
+    isHovered.current = false;
+  };
+
+  const handleMouseUp = () => {
+    isDown.current = false;
+  };
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (!isDown.current) return;
+    const container = containerRef.current;
+    if (!container) return;
+
+    const x = e.pageX - container.offsetLeft;
+    const walk = (x - startX.current) * 1.5; // Drag sensitivity multiplier
+    
+    if (Math.abs(walk) > 5) {
+      hasMoved.current = true; // Mark as dragging to prevent accidental link clicks
+    }
+
+    let newScrollLeft = scrollLeft.current - walk;
+    const halfWidth = container.scrollWidth / 2;
+
+    // Infinite boundary wrap-around checks while dragging
+    if (newScrollLeft >= halfWidth) {
+      newScrollLeft -= halfWidth;
+      startX.current = x;
+      scrollLeft.current = newScrollLeft;
+    } else if (newScrollLeft <= 0) {
+      newScrollLeft += halfWidth;
+      startX.current = x;
+      scrollLeft.current = newScrollLeft;
+    }
+
+    container.scrollLeft = newScrollLeft;
+  };
+
+  // Touch Screen Drag Handlers (Mobile Support)
+  const handleTouchStart = (e: React.TouchEvent) => {
+    const container = containerRef.current;
+    if (!container) return;
+    isDown.current = true;
+    hasMoved.current = false;
+    startX.current = e.touches[0].pageX - container.offsetLeft;
+    scrollLeft.current = container.scrollLeft;
+  };
+
+  const handleTouchEnd = () => {
+    isDown.current = false;
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    if (!isDown.current) return;
+    const container = containerRef.current;
+    if (!container) return;
+
+    const x = e.touches[0].pageX - container.offsetLeft;
+    const walk = (x - startX.current) * 1.5;
+    
+    if (Math.abs(walk) > 5) {
+      hasMoved.current = true;
+    }
+
+    let newScrollLeft = scrollLeft.current - walk;
+    const halfWidth = container.scrollWidth / 2;
+
+    if (newScrollLeft >= halfWidth) {
+      newScrollLeft -= halfWidth;
+      startX.current = x;
+      scrollLeft.current = newScrollLeft;
+    } else if (newScrollLeft <= 0) {
+      newScrollLeft += halfWidth;
+      startX.current = x;
+      scrollLeft.current = newScrollLeft;
+    }
+
+    container.scrollLeft = newScrollLeft;
+  };
+
+  return (
+    <section className="py-24 overflow-hidden">
+      <div className="container">
+        <motion.h2
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="text-3xl md:text-4xl font-bold text-gradient mb-4"
+        >
+          Web Design
+        </motion.h2>
+        <p className="text-muted-foreground mb-12 max-w-xl">
+          A collection of professional deployments and technical projects
+          showcasing design sensibility and modern development stacks.
+        </p>
       </div>
-    </div>
 
-    <style>{`
-      @keyframes marquee {
-        0% { transform: translateX(0); }
-        100% { transform: translateX(-50%); }
-      }
-      .animate-marquee {
-        display: flex;
-        width: max-content;
-        /* Depending on the total number of items, you might want to adjust the duration (60s) for a smoother speed */
-        animation: marquee 60s linear infinite;
-      }
-      .animate-marquee:hover {
-        animation-play-state: paused;
-      }
-      .mask-edges {
-        -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
-        mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
-      }
-    `}</style>
-  </section>
-);
+      <div className="relative mask-edges">
+        <div
+          ref={containerRef}
+          onMouseDown={handleMouseDown}
+          onMouseLeave={handleMouseLeave}
+          onMouseUp={handleMouseUp}
+          onMouseMove={handleMouseMove}
+          onTouchStart={handleTouchStart}
+          onTouchEnd={handleTouchEnd}
+          onTouchMove={handleTouchMove}
+          onMouseEnter={() => {
+            isHovered.current = true;
+          }}
+          onMouseOver={() => {
+            isHovered.current = true;
+          }}
+          className="flex gap-8 py-4 overflow-x-auto no-scrollbar select-none cursor-grab active:cursor-grabbing w-full"
+        >
+          {carouselItems.map((project, i) => (
+            <div
+              key={`${project.title}-${i}`}
+              className="group flex-shrink-0 w-[350px] md:w-[450px] relative flex flex-col rounded-2xl border border-border bg-card overflow-hidden hover:border-primary/50 transition-all duration-500 shadow-xl"
+            >
+              <div className="h-64 relative overflow-hidden">
+                <img
+                  src={project.image}
+                  alt={project.alt}
+                  className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-110"
+                  draggable={false}
+                />
+
+                <div className="absolute inset-0 bg-black/85 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-center p-8">
+                  <p className="text-white text-sm leading-relaxed mb-4">
+                    {project.description}
+                  </p>
+                  <div className="w-12 h-1 bg-primary rounded-full"></div>
+                </div>
+              </div>
+
+              <div className="p-6">
+                <div className="mb-2">
+                  <span className="text-[10px] uppercase tracking-widest text-primary font-bold">
+                    {project.stack}
+                  </span>
+                </div>
+                <h3 className="text-xl font-semibold text-foreground mb-4">
+                  {project.title}
+                </h3>
+
+                <a
+                  href={project.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={(e) => {
+                    // Prevent navigation if the user was just dragging the track
+                    if (hasMoved.current) {
+                      e.preventDefault();
+                    }
+                  }}
+                  className="inline-flex items-center gap-2 text-sm font-medium text-foreground hover:text-primary transition-colors border-b border-transparent hover:border-primary pb-1 w-fit"
+                >
+                  View Live Site <ExternalLink className="w-4 h-4" />
+                </a>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <style>{`
+        .no-scrollbar::-webkit-scrollbar {
+          display: none;
+        }
+        .no-scrollbar {
+          -ms-overflow-style: none;
+          scrollbar-width: none;
+        }
+        .mask-edges {
+          -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+          mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+        }
+      `}</style>
+    </section>
+  );
+};
 
 export default WebDesignProject;

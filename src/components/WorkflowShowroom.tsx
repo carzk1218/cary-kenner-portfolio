@@ -184,21 +184,16 @@ const WorkflowShowroom = () => {
                 className="aspect-video w-full bg-black relative cursor-pointer overflow-hidden"
                 onClick={() => setModalData({ media: item.media, title: item.title })}
               >
-                {/* UPDATED: Initial src tries maxresdefault. 
-                  We remove '?v=1' to make fallback detection cleaner.
-                */}
                 <img 
                   src={item.media[0].startsWith("/") 
                     ? item.media[0] 
                     : `https://img.youtube.com/vi/${item.media[0]}/maxresdefault.jpg`} 
                   className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity" 
                   alt={item.title}
-                  
-                  // NEW FALLBACK LOGIC
                   onError={(e) => {
-                    const target = e.target as HTMLImageElement;
-                    // If we tried loading maxresdefault and it failed (resulting in 35.png), try hqdefault.
-                    if (!item.media[0].startsWith("/") && target.src.includes("maxresdefault.jpg")) {
+                    // This is the magic fix. If YouTube fails to provide maxresdefault, we instantly swap to hqdefault.
+                    const target = e.currentTarget;
+                    if (target.src.includes("maxresdefault.jpg")) {
                       target.src = `https://img.youtube.com/vi/${item.media[0]}/hqdefault.jpg`;
                     }
                   }}

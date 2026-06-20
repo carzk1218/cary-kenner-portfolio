@@ -156,6 +156,17 @@ const WorkflowShowroom = () => {
         "Build: One-click registration path with SMS/Email reminders.",
         "Win: Increased show-up rates and engagement tracking."
       ]
+    },
+    {
+      id: "ghl-custom-dashboard",
+      title: "GHL: Custom Client Dashboard",
+      media: ["DPpCoCcSTpg"],
+      description: [
+        "Gap: SaaS clients frustrated by native GHL dashboard complexity.",
+        "Goal: Provide a minimalist, premium interface tracking core metrics.",
+        "Build: Custom HTML/CSS funnel + Google Apps Script automation.",
+        "Win: Higher client retention due to simplified white-label reporting."
+      ]
     }
   ];
 

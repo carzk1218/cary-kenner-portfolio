@@ -1,6 +1,14 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
+// 1. Explicitly define the types so TypeScript doesn't throw errors
+type WorkflowItem = {
+  id: string;
+  title: string;
+  media: string[];
+  description: string[];
+};
+
 const MediaModal = ({ media, title, onClose }: { media: string[]; title: string; onClose: () => void }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const nextMedia = () => setCurrentIndex((prev) => (prev + 1) % media.length);
@@ -50,8 +58,8 @@ const WorkflowShowroom = () => {
   const [modalData, setModalData] = useState<{ media: string[]; title: string } | null>(null);
   const [showAll, setShowAll] = useState(false);
 
-  // Array reordered according to priority and placement request
-  const workflows = [
+  // 2. Apply the WorkflowItem type to our array
+  const workflows: WorkflowItem[] = [
     {
       id: "clinic-automation",
       title: "Zapier: Clinic AI Patient Journey",
@@ -172,7 +180,7 @@ const WorkflowShowroom = () => {
     }
   ];
 
-  // Logic to dynamically change the number of displayed workflows
+  // Slice the array based on state
   const displayedWorkflows = showAll ? workflows : workflows.slice(0, 4);
 
   return (
@@ -184,29 +192,16 @@ const WorkflowShowroom = () => {
 
         {/* Grid container */}
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-10">
-          {/* Wrap mapped items with AnimatePresence. Mode wait is optional but 
-            helpful if items swap rather than just append. 
-          */}
           <AnimatePresence>
             {displayedWorkflows.map((item) => (
-              {/* Card motion.div with entry/exit animation props.
-                - unique key is required for each AnimatePresence child.
-                - initial: hidden state.
-                - animate: visible state.
-                - exit: hidden state when removed.
-              */}
               <motion.div 
                 key={item.id} 
                 initial={{ opacity: 0, scale: 0.8, y: 30 }}
                 animate={{ opacity: 1, scale: 1, y: 0 }}
                 exit={{ opacity: 0, scale: 0.8, y: 30 }}
-                transition={{ duration: 0.5 }} // Adjust animation duration as desired
-                // Use original card styling
+                transition={{ duration: 0.5 }} 
                 className="bg-[#121212] rounded-[2rem] border border-white/5 shadow-2xl overflow-hidden flex flex-col h-fit transition-all duration-300 hover:border-purple-500/30 group"
               >
-                {/* Original card content structure remains exactly the same, 
-                  including image fallbacks and hover effects.
-                */}
                 <div 
                   className="aspect-video w-full bg-black relative cursor-pointer overflow-hidden"
                   onClick={() => setModalData({ media: item.media, title: item.title })}
@@ -217,7 +212,6 @@ const WorkflowShowroom = () => {
                       : `https://img.youtube.com/vi/${item.media[0]}/maxresdefault.jpg`} 
                     className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity" 
                     alt={item.title}
-                    // Fixed image logic from before
                     onError={(e) => {
                       const target = e.currentTarget;
                       if (target.src.includes("maxresdefault.jpg")) {

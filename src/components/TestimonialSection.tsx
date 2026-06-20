@@ -4,11 +4,39 @@ import { Quote, CheckCircle, X } from "lucide-react";
 
 const testimonials = [
   {
+    id: "alec-cc",
+    name: "Alec Peterson",
+    role: "Owner, Create Clients",
+    quote: "Cary is fast, efficent, and proactive when it comes to software and GHL specifically in my use case. Highly recommend Cary for anyone looking to be able to offloads tasks and not worry about them again 💪",
+    proofImage: "/testimonials/alec_cc_testi.png"
+  },
+  {
+    id: "fabiano",
+    name: "Fabiano Altamura",
+    role: "Owner, Fab.Coach",
+    quote: "Cary possesses a marvelous, almost intuitive grasp of HighLevel's intricate architecture. Translating my specific acting methodology into a functional, digital ecosystem was no small feat, yet he executed it with splendid precision. Frankly, the automated casting call workflows he generated are a masterclass in efficiency. Truly superb work.",
+    proofImage: "/testimonials/fabiano_testi.png"
+  },
+  {
     id: "ben",
     name: "Ben McKenzie",
     role: "Owner, Daybreak Land",
     quote: "Cary joined Daybreak Land in September 2024 as a Real Estate Acquisitions Specialist, and it was quickly clear that his talent for systems was just as strong as his talent for land deals. When we decided to move our entire operation to GoHighLevel in January 2025, Cary stepped up as the Architect of that transition. He didn't just move data, he built a high-converting machine from the ground up. His ability to blend real estate boots-on-the-ground experience with complex GHL automation is rare. He's a game-changer for any real estate team looking to scale.",
     proofImage: "/testimonials/bentesti.png"
+  },
+  {
+    id: "alec-xeva",
+    name: "Alec Peterson",
+    role: "CMO, Xeva Ventures",
+    quote: "Bro this update is good it's fire! Thanks! Seriously though, Cary took a messy backend and sorted everything out within Xeva's GHL account in record time. Saved us a huge amount of manual follow-up.",
+    proofImage: "/testimonials/alec_xeva_testi.png"
+  },
+  {
+    id: "hanson",
+    name: "Hanson Qiao",
+    role: "Manager, Shanghai Acupuncture Clinic",
+    quote: "Bro, that automation setup for the patient intake is absolutely wild, looks sick on the new site Cary made for us on funnel. Definitely way better than what we had before. My parents really like it, thank you.",
+    proofImage: "/testimonials/hanson_testi.png"
   },
   {
     id: "ophir",
@@ -24,8 +52,8 @@ const TestimonialSection = () => {
 
   return (
     <section id="testimonial" className="py-24">
-      <div className="container max-w-5xl">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+      <div className="container max-w-[1200px]">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {testimonials.map((testi) => (
             <motion.div
               key={testi.id}
@@ -36,14 +64,14 @@ const TestimonialSection = () => {
             >
               <div>
                 <Quote className="w-8 h-8 text-primary/30 mb-4" />
-                <blockquote className="text-foreground text-sm md:text-base leading-relaxed mb-6 italic">
+                <blockquote className="text-foreground text-sm leading-relaxed mb-6 italic">
                   "{testi.quote}"
                 </blockquote>
               </div>
               
-              <div className="flex items-end justify-between border-t border-white/5 pt-6">
+              <div className="flex items-end justify-between border-t border-white/5 pt-6 mt-auto">
                 <div>
-                  <p className="font-semibold text-foreground">{testi.name}</p>
+                  <p className="font-semibold text-foreground text-sm">{testi.name}</p>
                   <p className="text-xs text-muted-foreground">{testi.role}</p>
                 </div>
                 

@@ -36,7 +36,7 @@ const Header = () => {
 
             {/* Updated Resume Icon */}
             <a 
-              href="https://drive.google.com/file/d/14Kp3TBnnwAm7cZCKdCP-QHCvMB4iqnF8/view?usp=sharing" 
+              href="https://drive.google.com/file/d/1i1voF8AnOhwIJK8ZdlxS-ywVgcHGSyld/view?usp=sharing" 
               target="_blank" 
               rel="noopener noreferrer"
               aria-label="Resume"

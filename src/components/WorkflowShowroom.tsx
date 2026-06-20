@@ -190,24 +190,29 @@ const WorkflowShowroom = () => {
           Workflow <span className="text-purple-500 italic">Showroom</span>
         </h2>
 
-        {/* 1. Added layout prop to the grid wrapper to animate overall height changes */}
+        {/* Added layout prop to the grid wrapper to animate overall height changes */}
         <motion.div layout className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-10">
           <AnimatePresence mode="sync">
-            {/* 2. Extracted 'index' to stagger the new cards row-by-row */}
             {displayedWorkflows.map((item, index) => (
               <motion.div 
                 key={item.id} 
-                layout // Added layout so cards don't jitter when the container resizes
+                layout
                 initial={{ opacity: 0, scale: 0.8, y: 50 }}
                 animate={{ opacity: 1, scale: 1, y: 0 }}
-                exit={{ opacity: 0, scale: 0.8, y: 30 }}
+                // Crucial fix: removed the staggered delays completely on exit, 
+                // making collapsing immediate and snappy.
+                exit={{ 
+                  opacity: 0, 
+                  scale: 0.9, 
+                  y: 20,
+                  transition: { duration: 0.2 } 
+                }}
                 transition={{ 
-                  // The layout transition handles the smooth slide down/up
-                  layout: { type: "spring", stiffness: 80, damping: 14 },
-                  // The entry transitions handle the staggered row-by-row pop up
-                  opacity: { duration: 0.3, delay: index >= 4 ? (index - 4) * 0.1 : 0 },
-                  y: { type: "spring", stiffness: 100, damping: 12, delay: index >= 4 ? (index - 4) * 0.1 : 0 },
-                  scale: { type: "spring", stiffness: 100, damping: 12, delay: index >= 4 ? (index - 4) * 0.1 : 0 }
+                  layout: { type: "spring", stiffness: 90, damping: 15 },
+                  // Delays only apply to new cards populating row-by-row (index >= 4)
+                  opacity: { duration: 0.3, delay: index >= 4 ? (index - 4) * 0.08 : 0 },
+                  y: { type: "spring", stiffness: 100, damping: 12, delay: index >= 4 ? (index - 4) * 0.08 : 0 },
+                  scale: { type: "spring", stiffness: 100, damping: 12, delay: index >= 4 ? (index - 4) * 0.08 : 0 }
                 }} 
                 className="bg-[#121212] rounded-[2rem] border border-white/5 shadow-2xl overflow-hidden flex flex-col h-fit transition-all duration-300 hover:border-purple-500/30 group"
               >
@@ -269,10 +274,10 @@ const WorkflowShowroom = () => {
           </AnimatePresence>
         </motion.div>
 
-        {/* 3. Wrapped the button inside a motion.div with layout so it slides smoothly */}
+        {/* Wrapped the button inside a motion.div with layout so it slides smoothly */}
         <motion.div 
           layout 
-          transition={{ layout: { type: "spring", stiffness: 80, damping: 14 } }} 
+          transition={{ layout: { type: "spring", stiffness: 90, damping: 15 } }} 
           className="mt-16 flex justify-center"
         >
           <button

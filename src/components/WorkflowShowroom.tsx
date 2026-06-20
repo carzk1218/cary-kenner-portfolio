@@ -50,7 +50,7 @@ const WorkflowShowroom = () => {
   const [modalData, setModalData] = useState<{ media: string[]; title: string } | null>(null);
   const [showAll, setShowAll] = useState(false);
 
-  // Array reordered according to priority
+  // Array reordered according to priority and placement request
   const workflows = [
     {
       id: "clinic-automation",
@@ -172,7 +172,7 @@ const WorkflowShowroom = () => {
     }
   ];
 
-  // Slice the array based on state
+  // Logic to dynamically change the number of displayed workflows
   const displayedWorkflows = showAll ? workflows : workflows.slice(0, 4);
 
   return (
@@ -182,67 +182,91 @@ const WorkflowShowroom = () => {
           Workflow <span className="text-purple-500 italic">Showroom</span>
         </h2>
 
+        {/* Grid container */}
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-10">
-          {displayedWorkflows.map((item) => (
-            <div key={item.id} className="bg-[#121212] rounded-[2rem] border border-white/5 shadow-2xl overflow-hidden flex flex-col h-fit transition-all duration-300 hover:border-purple-500/30 group">
-              <div 
-                className="aspect-video w-full bg-black relative cursor-pointer overflow-hidden"
-                onClick={() => setModalData({ media: item.media, title: item.title })}
+          {/* Wrap mapped items with AnimatePresence. Mode wait is optional but 
+            helpful if items swap rather than just append. 
+          */}
+          <AnimatePresence>
+            {displayedWorkflows.map((item) => (
+              {/* Card motion.div with entry/exit animation props.
+                - unique key is required for each AnimatePresence child.
+                - initial: hidden state.
+                - animate: visible state.
+                - exit: hidden state when removed.
+              */}
+              <motion.div 
+                key={item.id} 
+                initial={{ opacity: 0, scale: 0.8, y: 30 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.8, y: 30 }}
+                transition={{ duration: 0.5 }} // Adjust animation duration as desired
+                // Use original card styling
+                className="bg-[#121212] rounded-[2rem] border border-white/5 shadow-2xl overflow-hidden flex flex-col h-fit transition-all duration-300 hover:border-purple-500/30 group"
               >
-                <img 
-                  src={item.media[0].startsWith("/") 
-                    ? item.media[0] 
-                    : `https://img.youtube.com/vi/${item.media[0]}/maxresdefault.jpg`} 
-                  className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity" 
-                  alt={item.title}
-                  onError={(e) => {
-                    const target = e.currentTarget;
-                    if (target.src.includes("maxresdefault.jpg")) {
-                      target.src = `https://img.youtube.com/vi/${item.media[0]}/hqdefault.jpg`;
-                    }
-                  }}
-                />
-                <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-purple-600/10">
-                   <span className="bg-white/10 backdrop-blur-md border border-white/20 px-8 py-3 rounded-full text-xs font-bold uppercase tracking-widest text-white">Open Gallery</span>
-                </div>
-              </div>
-
-              <div className="p-8">
-                <button 
-                  onClick={() => setActiveId(activeId === item.id ? null : item.id)}
-                  className="flex items-center justify-between w-full text-left"
+                {/* Original card content structure remains exactly the same, 
+                  including image fallbacks and hover effects.
+                */}
+                <div 
+                  className="aspect-video w-full bg-black relative cursor-pointer overflow-hidden"
+                  onClick={() => setModalData({ media: item.media, title: item.title })}
                 >
-                  <span className="text-xl font-bold text-white group-hover:text-purple-400 transition-colors pr-2">{item.title}</span>
-                  <div className={`p-2.5 rounded-xl transition-all ${activeId === item.id ? 'bg-purple-500 text-white shadow-[0_0_15px_rgba(168,85,247,0.4)]' : 'bg-white/5 text-purple-400'}`}>
-                    <svg className={`w-5 h-5 transform transition-transform ${activeId === item.id ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="3"><path d="M19 9l-7 7-7-7"/></svg>
+                  <img 
+                    src={item.media[0].startsWith("/") 
+                      ? item.media[0] 
+                      : `https://img.youtube.com/vi/${item.media[0]}/maxresdefault.jpg`} 
+                    className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity" 
+                    alt={item.title}
+                    // Fixed image logic from before
+                    onError={(e) => {
+                      const target = e.currentTarget;
+                      if (target.src.includes("maxresdefault.jpg")) {
+                        target.src = `https://img.youtube.com/vi/${item.media[0]}/hqdefault.jpg`;
+                      }
+                    }}
+                  />
+                  <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-purple-600/10">
+                     <span className="bg-white/10 backdrop-blur-md border border-white/20 px-8 py-3 rounded-full text-xs font-bold uppercase tracking-widest text-white">Open Gallery</span>
                   </div>
-                </button>
+                </div>
 
-                <AnimatePresence>
-                  {activeId === item.id && (
-                    <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} className="overflow-hidden">
-                      <ul className="mt-8 space-y-5 border-t border-white/5 pt-8">
-                        {item.description.map((bullet, i) => {
-                          const [label, content] = bullet.split(": ");
-                          return (
-                            <li key={i} className="text-gray-400 text-[0.95rem] flex items-start leading-relaxed">
-                              <span className="text-purple-500 mr-4 mt-1.5 text-[10px]">●</span>
-                              <span>
-                                <strong className="text-white font-bold">{label}:</strong> {content}
-                              </span>
-                            </li>
-                          );
-                        })}
-                      </ul>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </div>
-            </div>
-          ))}
+                <div className="p-8">
+                  <button 
+                    onClick={() => setActiveId(activeId === item.id ? null : item.id)}
+                    className="flex items-center justify-between w-full text-left"
+                  >
+                    <span className="text-xl font-bold text-white group-hover:text-purple-400 transition-colors pr-2">{item.title}</span>
+                    <div className={`p-2.5 rounded-xl transition-all ${activeId === item.id ? 'bg-purple-500 text-white shadow-[0_0_15px_rgba(168,85,247,0.4)]' : 'bg-white/5 text-purple-400'}`}>
+                      <svg className={`w-5 h-5 transform transition-transform ${activeId === item.id ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="3"><path d="M19 9l-7 7-7-7"/></svg>
+                    </div>
+                  </button>
+
+                  <AnimatePresence>
+                    {activeId === item.id && (
+                      <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} className="overflow-hidden">
+                        <ul className="mt-8 space-y-5 border-t border-white/5 pt-8">
+                          {item.description.map((bullet, i) => {
+                            const [label, content] = bullet.split(": ");
+                            return (
+                              <li key={i} className="text-gray-400 text-[0.95rem] flex items-start leading-relaxed">
+                                <span className="text-purple-500 mr-4 mt-1.5 text-[10px]">●</span>
+                                <span>
+                                  <strong className="text-white font-bold">{label}:</strong> {content}
+                                </span>
+                              </li>
+                            );
+                          })}
+                        </ul>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+              </motion.div>
+            ))}
+          </AnimatePresence>
         </div>
 
-        {/* See More / Show Less Button */}
+        {/* Dynamic See More / Show Less Button */}
         <div className="mt-16 flex justify-center">
           <button
             onClick={() => setShowAll(!showAll)}

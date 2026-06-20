@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 // Imported 'animate' utility to drive the custom spring scroll
 import { motion, AnimatePresence, animate } from "framer-motion";
 
@@ -36,7 +36,7 @@ const MediaModal = ({ media, title, onClose }: { media: string[]; title: string;
             <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="3"><path d="M15 19l-7-7 7-7" /></svg>
           </button>
 
-          <button onClick={nextMedia} className="absolute right-2 md:right-4 z-[1001] w-14 h-14 flex items-center justify-center rounded-full bg-black/80 border border-white/10 text-white hover:bg-purple-600 transition-all">
+          <button onClick={nextMedia} className="absolute right-2 md:left-4 z-[1001] w-14 h-14 flex items-center justify-center rounded-full bg-black/80 border border-white/10 text-white hover:bg-purple-600 transition-all">
             <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="3"><path d="M9 5l7 7-7 7" /></svg>
           </button>
           
@@ -57,6 +57,9 @@ const WorkflowShowroom = () => {
   const [activeId, setActiveId] = useState<string | null>(null);
   const [modalData, setModalData] = useState<{ media: string[]; title: string } | null>(null);
   const [showAll, setShowAll] = useState(false);
+  
+  // NEW: Ref to track the button element position dynamically
+  const buttonRef = useRef<HTMLDivElement>(null);
 
   const workflows: WorkflowItem[] = [
     {
@@ -182,17 +185,15 @@ const WorkflowShowroom = () => {
   const primaryWorkflows = workflows.slice(0, 4);
   const extraWorkflows = workflows.slice(4);
 
-  // UPDATED: Custom spring scroll handler matching container exit physics
+  // UPDATED: Dual-action scroll handler
   const handleToggleShowAll = () => {
     if (showAll) {
       setShowAll(false);
       
       const element = document.getElementById("showroom");
       if (element) {
-        // Find the absolute top coordinate of the showroom section
         const targetScrollY = element.getBoundingClientRect().top + window.scrollY;
         
-        // Animate window.scrollY smoothly using the exact same spring configs as the exit layout
         animate(window.scrollY, targetScrollY, {
           type: "spring",
           stiffness: 100,
@@ -202,6 +203,32 @@ const WorkflowShowroom = () => {
       }
     } else {
       setShowAll(true);
+      
+      // NEW: Frame-by-frame viewport tracker for the expanding layout
+      setTimeout(() => {
+        const startTime = performance.now();
+        const duration = 800; // Matches the spring layout settling time
+        
+        const trackButtonDownward = (now: number) => {
+          const elapsed = now - startTime;
+          if (elapsed < duration) {
+            if (buttonRef.current) {
+              const buttonRect = buttonRef.current.getBoundingClientRect();
+              const buttonAbsoluteTop = buttonRect.top + window.scrollY;
+              
+              // Pin the viewport so the button stays cleanly positioned 40px above the bottom edge
+              const targetScrollY = (buttonAbsoluteTop + buttonRect.height) - window.innerHeight + 40;
+              
+              // Only push the camera down if the button is moving below our threshold
+              if (targetScrollY > window.scrollY) {
+                window.scrollTo(0, targetScrollY);
+              }
+            }
+            requestAnimationFrame(trackButtonDownward);
+          }
+        };
+        requestAnimationFrame(trackButtonDownward);
+      }, 30); // Tiny buffer allows the DOM to render the starting height state change
     }
   };
 
@@ -297,7 +324,6 @@ const WorkflowShowroom = () => {
                   opacity: { duration: 0.4 }
                 }
               }}
-              // Collapses height down over custom spring
               exit={{ 
                 height: 0, 
                 opacity: 0,
@@ -315,8 +341,8 @@ const WorkflowShowroom = () => {
           )}
         </AnimatePresence>
 
-        {/* Interactive Action Button */}
-        <div className="mt-16 flex justify-center">
+        {/* Interactive Action Button: Linked to buttonRef */}
+        <div ref={buttonRef} className="mt-16 flex justify-center">
           <button
             onClick={handleToggleShowAll}
             className={`px-8 py-4 rounded-full border transition-all duration-300 flex items-center gap-3 group font-semibold ${

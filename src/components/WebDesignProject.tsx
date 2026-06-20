@@ -4,14 +4,58 @@ import geekseek from "@/assets/geekseek.png";
 import daybreakland from "@/assets/daybreakland.png";
 import jollyland from "@/assets/jollylandweb.png";
 import realmomentum from "@/assets/realmomentum.png";
+// New Imports
+import xevaventures from "@/assets/xevaventures.png";
+import acuforsyth from "@/assets/acuforsyth.png";
+import createclients from "@/assets/createclients.png";
+import fabcoach from "@/assets/fab.coach.png";
 
 const projects = [
+  // New Projects (Placing them first)
+  {
+    image: acuforsyth,
+    alt: "Shanghai Acupuncture Clinic Website",
+    title: "Shanghai Acupuncture Clinic",
+    stack: "HighLevel • Custom HTML/CSS",
+    description:
+      "A professional healthcare web presence built within HighLevel, utilizing custom HTML and CSS to deliver a tailored, serene user experience for acupuncture patients.",
+    link: "https://acuforsyth.com/",
+  },
+  {
+    image: createclients,
+    alt: "Create Clients Marketing Website",
+    title: "Create Clients",
+    stack: "HighLevel • Custom HTML/CSS",
+    description:
+      "A dynamic digital agency site deployed on HighLevel, focusing on lead generation and conversion through bespoke frontend modifications.",
+    link: "https://createclients.com/",
+  },
+  {
+    image: xevaventures,
+    alt: "Xeva Ventures Tax Strategy Website",
+    title: "Xeva Ventures Tax Strategy",
+    stack: "HighLevel • Custom HTML/CSS",
+    description:
+      "A sophisticated corporate financial site for modern tax strategy, leveraging HighLevel core features combined with custom code for branding consistency.",
+    link: "https://www.xevaventures.com/",
+  },
+  {
+    image: fabcoach,
+    alt: "Fab.Coach Coaching Platform Website",
+    title: "Fab.Coach",
+    stack: "HighLevel • Custom HTML/CSS",
+    description:
+      "A premium coaching landing page designed on the HighLevel platform, enhanced with CSS overrides to create a distinct, high-end visual brand presentation.",
+    link: "https://fab.coach/",
+  },
+  // Existing Original Projects
   {
     image: jollyland,
     alt: "JollyLand Real Estate Platform",
     title: "JollyLand: Modern Land Solutions",
     stack: "React • Tailwind CSS • Framer Motion",
-    description: "A high-conversion real estate platform featuring infinite carousels, automated workflows, and a digital-first approach to land acquisitions.",
+    description:
+      "A high-conversion real estate platform featuring infinite carousels, automated workflows, and a digital-first approach to land acquisitions.",
     link: "https://jollyland-site.vercel.app/",
   },
   {
@@ -19,7 +63,8 @@ const projects = [
     alt: "Real Momentum SaaS Platform",
     title: "Real Momentum: Real Estate SaaS",
     stack: "HighLevel • CRM Integration • Lead Capturing",
-    description: "An all-in-one automation ecosystem designed for real estate agents, featuring high-converting funnels, automated follow-ups, and a centralized lead management engine.",
+    description:
+      "An all-in-one automation ecosystem designed for real estate agents, featuring high-converting funnels, automated follow-ups, and a centralized lead management engine.",
     link: "https://realmomentum.com/index",
   },
   {
@@ -27,7 +72,8 @@ const projects = [
     alt: "Daybreak Land Website",
     title: "Daybreak Land: Live Business",
     stack: "GoDaddy Builder • Lead Capture",
-    description: "A professional web presence for a real estate investment firm, built on GoDaddy's proprietary platform for rapid deployment and reliability.",
+    description:
+      "A professional web presence for a real estate investment firm, built on GoDaddy's proprietary platform for rapid deployment and reliability.",
     link: "https://daybreakland.com/",
   },
   {
@@ -35,11 +81,13 @@ const projects = [
     alt: "GeekSeek Capstone Project",
     title: "GeekSeek: Custom Capstone",
     stack: "HTML5 • CSS3 • JavaScript",
-    description: "My technical BSIT roots. A custom-coded project focused on frontend UI/UX proficiency and clean core programming structures.",
+    description:
+      "My technical BSIT roots. A custom-coded project focused on frontend UI/UX proficiency and clean core programming structures.",
     link: "https://carzk1218.gitlab.io/capstone-1/#",
   },
 ];
 
+// Duplicating for the infinite loop effect
 const carouselItems = [...projects, ...projects];
 
 const WebDesignProject = () => (
@@ -54,17 +102,17 @@ const WebDesignProject = () => (
         Web Design
       </motion.h2>
       <p className="text-muted-foreground mb-12 max-w-xl">
-        A collection of professional deployments and technical projects showcasing design sensibility and modern development stacks.
+        A collection of professional deployments and technical projects
+        showcasing design sensibility and modern development stacks.
       </p>
     </div>
 
-    {/* The outer container no longer has the 'group' class */}
     <div className="relative mask-edges">
+      {/* We increase the width of the marquee container to max-content to accommodate all items */}
       <div className="flex animate-marquee gap-8 py-4">
         {carouselItems.map((project, i) => (
           <div
             key={`${project.title}-${i}`}
-            // The 'group' class is now strictly on the card itself
             className="group flex-shrink-0 w-[350px] md:w-[450px] relative flex flex-col rounded-2xl border border-border bg-card overflow-hidden hover:border-primary/50 transition-all duration-500 shadow-xl"
           >
             <div className="h-64 relative overflow-hidden">
@@ -73,8 +121,7 @@ const WebDesignProject = () => (
                 alt={project.alt}
                 className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-110"
               />
-              
-              {/* This overlay now only triggers when its specific parent card is hovered */}
+
               <div className="absolute inset-0 bg-black/85 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-center p-8">
                 <p className="text-white text-sm leading-relaxed mb-4">
                   {project.description}
@@ -92,7 +139,7 @@ const WebDesignProject = () => (
               <h3 className="text-xl font-semibold text-foreground mb-4">
                 {project.title}
               </h3>
-              
+
               <a
                 href={project.link}
                 target="_blank"
@@ -115,7 +162,8 @@ const WebDesignProject = () => (
       .animate-marquee {
         display: flex;
         width: max-content;
-        animation: marquee 40s linear infinite;
+        /* Depending on the total number of items, you might want to adjust the duration (60s) for a smoother speed */
+        animation: marquee 60s linear infinite;
       }
       .animate-marquee:hover {
         animation-play-state: paused;

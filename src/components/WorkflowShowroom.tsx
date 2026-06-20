@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+// Imported 'animate' utility to drive the custom spring scroll
+import { motion, AnimatePresence, animate } from "framer-motion";
 
 type WorkflowItem = {
   id: string;
@@ -178,26 +179,32 @@ const WorkflowShowroom = () => {
     }
   ];
 
-  // Split the data architecture permanently into Main vs Extra arrays
   const primaryWorkflows = workflows.slice(0, 4);
   const extraWorkflows = workflows.slice(4);
 
+  // UPDATED: Custom spring scroll handler matching container exit physics
   const handleToggleShowAll = () => {
     if (showAll) {
       setShowAll(false);
-      // Synchronize the smooth scroll exactly alongside the folding animation
-      setTimeout(() => {
-        document.getElementById("showroom")?.scrollIntoView({ 
-          behavior: "smooth", 
-          block: "start" 
+      
+      const element = document.getElementById("showroom");
+      if (element) {
+        // Find the absolute top coordinate of the showroom section
+        const targetScrollY = element.getBoundingClientRect().top + window.scrollY;
+        
+        // Animate window.scrollY smoothly using the exact same spring configs as the exit layout
+        animate(window.scrollY, targetScrollY, {
+          type: "spring",
+          stiffness: 100,
+          damping: 18,
+          onUpdate: (latest) => window.scrollTo(0, latest)
         });
-      }, 80);
+      }
     } else {
       setShowAll(true);
     }
   };
 
-  // Shared card rendering logic to clean up the JSX architecture
   const renderCard = (item: WorkflowItem, index: number, isExtra: boolean) => (
     <motion.div 
       key={item.id} 
@@ -290,6 +297,7 @@ const WorkflowShowroom = () => {
                   opacity: { duration: 0.4 }
                 }
               }}
+              // Collapses height down over custom spring
               exit={{ 
                 height: 0, 
                 opacity: 0,
@@ -300,7 +308,6 @@ const WorkflowShowroom = () => {
               }}
               className="overflow-hidden"
             >
-              {/* Extra Grid injection inside the accordion */}
               <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-10 mt-10">
                 {extraWorkflows.map((item, index) => renderCard(item, index, true))}
               </div>
@@ -308,7 +315,7 @@ const WorkflowShowroom = () => {
           )}
         </AnimatePresence>
 
-        {/* Interactive Action Button: Stays locked in standard DOM flow */}
+        {/* Interactive Action Button */}
         <div className="mt-16 flex justify-center">
           <button
             onClick={handleToggleShowAll}

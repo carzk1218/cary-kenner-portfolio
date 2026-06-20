@@ -48,7 +48,9 @@ const MediaModal = ({ media, title, onClose }: { media: string[]; title: string;
 const WorkflowShowroom = () => {
   const [activeId, setActiveId] = useState<string | null>(null);
   const [modalData, setModalData] = useState<{ media: string[]; title: string } | null>(null);
+  const [showAll, setShowAll] = useState(false);
 
+  // Array reordered according to priority
   const workflows = [
     {
       id: "clinic-automation",
@@ -125,6 +127,17 @@ const WorkflowShowroom = () => {
       ]
     },
     {
+      id: "ghl-custom-dashboard",
+      title: "GHL: Custom Client Dashboard",
+      media: ["DPpCoCcSTpg"],
+      description: [
+        "Gap: SaaS clients frustrated by native GHL dashboard complexity.",
+        "Goal: Provide a minimalist, premium interface tracking core metrics.",
+        "Build: Custom HTML/CSS funnel + Google Apps Script automation.",
+        "Win: Higher client retention due to simplified white-label reporting."
+      ]
+    },
+    {
       id: "ghl-multi-subaccount",
       title: "GHL: Outreach & Response Hub",
       media: ["KxaeHoHinz8"],
@@ -156,19 +169,11 @@ const WorkflowShowroom = () => {
         "Build: One-click registration path with SMS/Email reminders.",
         "Win: Increased show-up rates and engagement tracking."
       ]
-    },
-    {
-      id: "ghl-custom-dashboard",
-      title: "GHL: Custom Client Dashboard",
-      media: ["DPpCoCcSTpg"],
-      description: [
-        "Gap: SaaS clients frustrated by native GHL dashboard complexity.",
-        "Goal: Provide a minimalist, premium interface tracking core metrics.",
-        "Build: Custom HTML/CSS funnel + Google Apps Script automation.",
-        "Win: Higher client retention due to simplified white-label reporting."
-      ]
     }
   ];
+
+  // Slice the array based on state
+  const displayedWorkflows = showAll ? workflows : workflows.slice(0, 4);
 
   return (
     <section id="showroom" className="py-32 bg-[#0a0a0a]">
@@ -178,7 +183,7 @@ const WorkflowShowroom = () => {
         </h2>
 
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-10">
-          {workflows.map((item) => (
+          {displayedWorkflows.map((item) => (
             <div key={item.id} className="bg-[#121212] rounded-[2rem] border border-white/5 shadow-2xl overflow-hidden flex flex-col h-fit transition-all duration-300 hover:border-purple-500/30 group">
               <div 
                 className="aspect-video w-full bg-black relative cursor-pointer overflow-hidden"
@@ -191,7 +196,6 @@ const WorkflowShowroom = () => {
                   className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity" 
                   alt={item.title}
                   onError={(e) => {
-                    // This is the magic fix. If YouTube fails to provide maxresdefault, we instantly swap to hqdefault.
                     const target = e.currentTarget;
                     if (target.src.includes("maxresdefault.jpg")) {
                       target.src = `https://img.youtube.com/vi/${item.media[0]}/hqdefault.jpg`;
@@ -237,6 +241,31 @@ const WorkflowShowroom = () => {
             </div>
           ))}
         </div>
+
+        {/* See More / Show Less Button */}
+        <div className="mt-16 flex justify-center">
+          <button
+            onClick={() => setShowAll(!showAll)}
+            className={`px-8 py-4 rounded-full border transition-all duration-300 flex items-center gap-3 group font-semibold ${
+              showAll 
+                ? "border-white/10 text-gray-400 hover:text-white hover:border-white/30" 
+                : "border-purple-500/30 text-white hover:bg-purple-500/10 hover:border-purple-500/50 hover:shadow-[0_0_20px_rgba(168,85,247,0.2)]"
+            }`}
+          >
+            {showAll ? (
+              <>
+                Show Less
+                <svg className="w-5 h-5 group-hover:-translate-y-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2"><path d="M5 15l7-7 7 7"/></svg>
+              </>
+            ) : (
+              <>
+                See More Workflows
+                <svg className="w-5 h-5 group-hover:translate-y-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2"><path d="M19 9l-7 7-7-7"/></svg>
+              </>
+            )}
+          </button>
+        </div>
+
       </div>
 
       {modalData && <MediaModal media={modalData.media} title={modalData.title} onClose={() => setModalData(null)} />}

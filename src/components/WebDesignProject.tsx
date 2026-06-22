@@ -101,9 +101,8 @@ const WebDesignProject = () => {
     if (!container) return;
 
     const updateLoop = () => {
-      // Only autoplay if user is not dragging and not hovering
       if (!isDown.current && !isHovered.current) {
-        container.scrollLeft += 0.8; // Control your autoplay speed here
+        container.scrollLeft += 0.8;
 
         const halfWidth = container.scrollWidth / 2;
         if (container.scrollLeft >= halfWidth) {
@@ -120,7 +119,6 @@ const WebDesignProject = () => {
     };
   }, []);
 
-  // Mouse Drag Handlers
   const handleMouseDown = (e: React.MouseEvent) => {
     const container = containerRef.current;
     if (!container) return;
@@ -145,16 +143,15 @@ const WebDesignProject = () => {
     if (!container) return;
 
     const x = e.pageX - container.offsetLeft;
-    const walk = (x - startX.current) * 1.5; // Drag sensitivity multiplier
+    const walk = (x - startX.current) * 1.5;
     
     if (Math.abs(walk) > 5) {
-      hasMoved.current = true; // Mark as dragging to prevent accidental link clicks
+      hasMoved.current = true;
     }
 
     let newScrollLeft = scrollLeft.current - walk;
     const halfWidth = container.scrollWidth / 2;
 
-    // Infinite boundary wrap-around checks while dragging
     if (newScrollLeft >= halfWidth) {
       newScrollLeft -= halfWidth;
       startX.current = x;
@@ -168,7 +165,6 @@ const WebDesignProject = () => {
     container.scrollLeft = newScrollLeft;
   };
 
-  // Touch Screen Drag Handlers (Mobile Support)
   const handleTouchStart = (e: React.TouchEvent) => {
     const container = containerRef.current;
     if (!container) return;
@@ -237,12 +233,8 @@ const WebDesignProject = () => {
           onTouchStart={handleTouchStart}
           onTouchEnd={handleTouchEnd}
           onTouchMove={handleTouchMove}
-          onMouseEnter={() => {
-            isHovered.current = true;
-          }}
-          onMouseOver={() => {
-            isHovered.current = true;
-          }}
+          onMouseEnter={() => { isHovered.current = true; }}
+          onMouseOver={() => { isHovered.current = true; }}
           className="flex gap-8 py-4 overflow-x-auto no-scrollbar select-none cursor-grab active:cursor-grabbing w-full"
         >
           {carouselItems.map((project, i) => (
@@ -254,7 +246,11 @@ const WebDesignProject = () => {
                 <img
                   src={project.image}
                   alt={project.alt}
-                  className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-110"
+                  className={`w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 ${
+                    (project.title === "Shanghai Acupuncture Clinic" || project.title === "Create Clients") 
+                    ? "object-[left_center]" 
+                    : "object-top"
+                  }`}
                   draggable={false}
                 />
 
@@ -281,7 +277,6 @@ const WebDesignProject = () => {
                   target="_blank"
                   rel="noopener noreferrer"
                   onClick={(e) => {
-                    // Prevent navigation if the user was just dragging the track
                     if (hasMoved.current) {
                       e.preventDefault();
                     }

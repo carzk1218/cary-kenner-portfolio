@@ -137,7 +137,8 @@ const WorkflowShowroom = () => {
     {
       id: "ghl-custom-dashboard",
       title: "GHL: Custom Client Dashboard",
-      media: ["DPpCoCcSTpg"],
+      // FIXED: Pointing to your newly uploaded repository image as the master thumbnail fallback
+      media: ["/projects/customdashboard.png", "DPpCoCcSTpg"],
       description: [
         "Gap: SaaS clients frustrated by native GHL dashboard complexity.",
         "Goal: Provide a minimalist, premium interface tracking core metrics.",
@@ -248,7 +249,6 @@ const WorkflowShowroom = () => {
           className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity" 
           alt={item.title}
           onError={(e) => {
-            // Bulletproof Fallback Chain
             const target = e.currentTarget as HTMLImageElement;
             if (target.src.includes("maxresdefault.jpg")) {
               target.src = `https://img.youtube.com/vi/${item.media[0]}/hqdefault.jpg`;

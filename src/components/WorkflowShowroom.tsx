@@ -1,5 +1,4 @@
 import React, { useState, useRef } from "react";
-// Imported 'animate' utility to drive the custom spring scroll
 import { motion, AnimatePresence, animate } from "framer-motion";
 
 type WorkflowItem = {
@@ -58,7 +57,6 @@ const WorkflowShowroom = () => {
   const [modalData, setModalData] = useState<{ media: string[]; title: string } | null>(null);
   const [showAll, setShowAll] = useState(false);
   
-  // NEW: Ref to track the button element position dynamically
   const buttonRef = useRef<HTMLDivElement>(null);
 
   const workflows: WorkflowItem[] = [
@@ -185,7 +183,6 @@ const WorkflowShowroom = () => {
   const primaryWorkflows = workflows.slice(0, 4);
   const extraWorkflows = workflows.slice(4);
 
-  // UPDATED: Dual-action scroll handler
   const handleToggleShowAll = () => {
     if (showAll) {
       setShowAll(false);
@@ -204,10 +201,9 @@ const WorkflowShowroom = () => {
     } else {
       setShowAll(true);
       
-      // NEW: Frame-by-frame viewport tracker for the expanding layout
       setTimeout(() => {
         const startTime = performance.now();
-        const duration = 800; // Matches the spring layout settling time
+        const duration = 800; 
         
         const trackButtonDownward = (now: number) => {
           const elapsed = now - startTime;
@@ -216,10 +212,8 @@ const WorkflowShowroom = () => {
               const buttonRect = buttonRef.current.getBoundingClientRect();
               const buttonAbsoluteTop = buttonRect.top + window.scrollY;
               
-              // Pin the viewport so the button stays cleanly positioned 40px above the bottom edge
               const targetScrollY = (buttonAbsoluteTop + buttonRect.height) - window.innerHeight + 40;
               
-              // Only push the camera down if the button is moving below our threshold
               if (targetScrollY > window.scrollY) {
                 window.scrollTo(0, targetScrollY);
               }
@@ -228,7 +222,7 @@ const WorkflowShowroom = () => {
           }
         };
         requestAnimationFrame(trackButtonDownward);
-      }, 30); // Tiny buffer allows the DOM to render the starting height state change
+      }, 30); 
     }
   };
 
@@ -254,9 +248,12 @@ const WorkflowShowroom = () => {
           className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity" 
           alt={item.title}
           onError={(e) => {
-            const target = e.currentTarget;
+            // Bulletproof Fallback Chain
+            const target = e.currentTarget as HTMLImageElement;
             if (target.src.includes("maxresdefault.jpg")) {
               target.src = `https://img.youtube.com/vi/${item.media[0]}/hqdefault.jpg`;
+            } else if (target.src.includes("hqdefault.jpg")) {
+              target.src = `https://img.youtube.com/vi/${item.media[0]}/mqdefault.jpg`;
             }
           }}
         />

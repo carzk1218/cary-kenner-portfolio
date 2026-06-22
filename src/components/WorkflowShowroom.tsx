@@ -35,7 +35,7 @@ const MediaModal = ({ media, title, onClose }: { media: string[]; title: string;
             <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="3"><path d="M15 19l-7-7 7-7" /></svg>
           </button>
 
-          <button onClick={nextMedia} className="absolute right-2 md:left-4 z-[1001] w-14 h-14 flex items-center justify-center rounded-full bg-black/80 border border-white/10 text-white hover:bg-purple-600 transition-all">
+          <button onClick={nextMedia} className="absolute right-2 md:right-4 z-[1001] w-14 h-14 flex items-center justify-center rounded-full bg-black/80 border border-white/10 text-white hover:bg-purple-600 transition-all">
             <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="3"><path d="M9 5l7 7-7 7" /></svg>
           </button>
           
@@ -137,7 +137,14 @@ const WorkflowShowroom = () => {
     {
       id: "ghl-custom-dashboard",
       title: "GHL: Custom Client Dashboard",
-      media: ["DPpCoCcSTpg"],
+      // FIXED: Reverted to local thumbnail asset and attached your new multi-dashboard project views
+      media: [
+        "/projects/customdashboard.png",
+        "/projects/bldashb.png",
+        "/projects/ccdashb.png",
+        "/projects/xevadashb.png",
+        "DPpCoCcSTpg"
+      ],
       description: [
         "Gap: SaaS clients frustrated by native GHL dashboard complexity.",
         "Goal: Provide a minimalist, premium interface tracking core metrics.",
@@ -248,7 +255,6 @@ const WorkflowShowroom = () => {
           className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity" 
           alt={item.title}
           onError={(e) => {
-            // Bulletproof Fallback Chain
             const target = e.currentTarget as HTMLImageElement;
             if (target.src.includes("maxresdefault.jpg")) {
               target.src = `https://img.youtube.com/vi/${item.media[0]}/hqdefault.jpg`;

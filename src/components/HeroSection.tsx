@@ -18,7 +18,7 @@ const HeroSection = () => (
           Helping businesses scale by building high-converting GoHighLevel ecosystems and seamless cross-platform automations. Expert in bridging the gap between your CRM and the tools you love using Zapier, Make.com, and n8n.
         </p>
         <div className="flex gap-4">
-          <a href="#work" className="inline-flex items-center justify-center rounded-lg bg-gradient-primary px-6 py-3 text-sm font-semibold text-primary-foreground hover:opacity-90 transition-opacity">
+          <a href="#showroom" className="inline-flex items-center justify-center rounded-lg bg-gradient-primary px-6 py-3 text-sm font-semibold text-primary-foreground hover:opacity-90 transition-opacity">
             View Work
           </a>
           <a
